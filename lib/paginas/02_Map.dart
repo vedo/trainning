@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:trainning/recursos/constant.dart';
+import 'package:trainning/claves.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 
 
@@ -16,23 +18,92 @@ class _PantallaMapsState extends State<PantallaMaps> {
   GoogleMapController mapController;
   Completer<GoogleMapController> _controller = Completer();
   bool closeWindow = true;
+  var markerList = Set<Marker>();
+  List<LatLng> posiciones = [ 
+    LatLng(-22.453636,-68.914739),
+    LatLng(-22.4545754,-68.9230375),
+    LatLng(-22.4545242,-68.9199767),
+    LatLng(-22.4517295,-68.9191101),
+    LatLng(-22.4564465,-68.9198948),
+    LatLng(-22.4553776,-68.9216041),   
+  ];
+
+  String nombreTienda = "";
+  String idVendor = "";
+  Widget listaProductos = Container();
+
+  void obtenerTiendas(){
+    final futureVendors = cliente.getVendors();
+    futureVendors.then( (resp){
+      int numeroDeClientes = resp.length;
+      setState((){
+        for( var i = 0 ; i < numeroDeClientes; i++ ) { 
+          String idTienda = resp[i].id.toString();
+          markerList.add(
+            Marker(
+              markerId: MarkerId(idTienda),
+              position: posiciones[i],
+              /* infoWindow: InfoWindow(
+                title: resp[i].login.toString(),
+              ), */
+              onTap: (){
+                setState(() {
+                  closeWindow = false;
+                  nombreTienda = resp[i].login.toString();
+                  idVendor = resp[i].id.toString();
+                  listaProductos = FutureBuilder(
+                    future: cliente.getProductos(idVendor),
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      switch (snapshot.connectionState) {
+                        case ConnectionState.none:
+                        case ConnectionState.waiting:
+                          return SpinKitThreeBounce(
+                            color: Colors.blue,
+                            size: 30.0,
+                          );
+                        default:
+                          if (snapshot.hasError)
+                            return Text('Error: ${snapshot.error}');
+                          else
+                            return construirListaDeProductos(context, snapshot);
+                      }
+                    },
+                  );
+                  /* Future futureProductos = cliente.getProductos(idVendor);
+                  futureProductos.then( (respProductos ){
+                    setState(() {
+                      listaProductos = construirListaDeProductos( respProductos );
+                    });
+                  }); */
+                });
+              },
+            )
+          );
+        }
+      }); 
+    });
+  }
 
   Widget pantallaTienda(){
     if( closeWindow ){
       return Container();
     }else{
       return MapStore(
+        nombreTienda: nombreTienda,
         onPressed: (){
           setState(() {
             closeWindow = true;
+            listaProductos = Container();
           });
         },
+        listaDeProductos: listaProductos,
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    obtenerTiendas();
     return Expanded(
       child: Container(
         child: Stack(
@@ -48,8 +119,8 @@ class _PantallaMapsState extends State<PantallaMaps> {
                 target: widget.initialMapPosition,
                 zoom: 15,
               ),
-              markers: _createMarkers(),
               mapType: MapType.terrain,
+              markers: markerList,
             ),
 
             Center(
@@ -74,30 +145,18 @@ class _PantallaMapsState extends State<PantallaMaps> {
     );
   } // Move Map
 
-  Set<Marker> _createMarkers(){
-    var markerList = Set<Marker>();
-    markerList.add(
-      Marker(
-        markerId: MarkerId('Cowork'),
-        position: LatLng(-22.453636,-68.914739),
-        onTap: (){
-          setState(() {
-            closeWindow = false;
-          });
-        },
-      )
-    );
-    //print( markerList.first.markerId.value.toString() );
-    return markerList;
-  } // Create Markers
 }// Pantalla Map State
 
 class MapStore extends StatelessWidget {
   final VoidCallback onPressed;
+  final String nombreTienda;
+  final Widget listaDeProductos;
 
   const MapStore({
     Key key,
-    this.onPressed
+    this.onPressed,
+    this.nombreTienda,
+    this.listaDeProductos,
   }) : super(key: key);
 
   @override
@@ -144,7 +203,7 @@ class MapStore extends StatelessWidget {
                       ),
                       SizedBox(width: 10,),
                       Text(
-                        "Nombre Tienda",
+                        this.nombreTienda,
                         style: TextStyle(
                           fontSize: 20
                         ),
@@ -156,27 +215,7 @@ class MapStore extends StatelessWidget {
 
                   Container(
                     height: 160,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: <Widget>[
-                        TarjetaProducto(
-                          nombreProducto: "Holi",
-                          precioProducto: 200.toString(),
-                        ),
-                        TarjetaProducto(
-                          nombreProducto: "Holi",
-                          precioProducto: 200.toString(),
-                        ),
-                        TarjetaProducto(
-                          nombreProducto: "Holi",
-                          precioProducto: 200.toString(),
-                        ),
-                        TarjetaProducto(
-                          nombreProducto: "Holi",
-                          precioProducto: 200.toString(),
-                        ),
-                      ],
-                    ),
+                    child: this.listaDeProductos,
                   )
                 ],
               ),
@@ -185,8 +224,7 @@ class MapStore extends StatelessWidget {
         ),
       );
   }
-}
-
+} // MapStore
 
 class TarjetaProducto extends StatelessWidget {
   final String nombreProducto;
@@ -223,11 +261,11 @@ class TarjetaProducto extends StatelessWidget {
               width: 145,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(34),
-                color: kPrimaryColor.withOpacity(0.4),
-                /* image: DecorationImage(
+                //color: kPrimaryColor.withOpacity(0.4),
+                image: DecorationImage(
                   image: this.imagenProducto,
                   fit: BoxFit.cover,
-                ), */
+                ),
               ),
             ),
           ),
@@ -266,4 +304,20 @@ class TarjetaProducto extends StatelessWidget {
       ),
     );
   }
-}
+} //TarjetaProducto
+
+Widget construirListaDeProductos(BuildContext context, AsyncSnapshot snapshot) {
+  return ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: snapshot.data.length,
+    itemBuilder: (BuildContext context, int index) {
+      String idProducto = snapshot.data[index].id.toString();
+      return TarjetaProducto(
+        nombreProducto: snapshot.data[index].name.toString(),
+        precioProducto: snapshot.data[index].price.toString(),
+        idProducto: idProducto,
+        imagenProducto: NetworkImage(snapshot.data[index].images[0].src),
+      );
+    },
+  );
+} 

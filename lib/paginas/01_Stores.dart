@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 //import 'package:trainning/recursos/constant.dart';
-import 'package:trainning/recursos/client.dart';
 import 'package:trainning/claves.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:trainning/recursos/ScreenArgument.dart';
-
-final cliente = ClientApi(
-  clientKey  : clientId,
-  secretKey  : secretId,
-  host       : "https://pancolor.cl/wp-json/wc/v2/",
-);
 
 class StoreList extends StatefulWidget {
   @override
