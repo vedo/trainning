@@ -1,0 +1,49 @@
+drawer: Drawer(
+          child: ListView(
+            children: <Widget>[
+              //Header
+              UserAccountsDrawerHeader(
+                accountName: Text('Account Name'),
+                accountEmail: Text('AccountEmail@mail.com'),
+                currentAccountPicture: GestureDetector(
+                  child: CircleAvatar(
+                    backgroundColor: Colors.grey,
+                    child: Icon(Icons.person, color: Colors.white,),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+
+
+
+appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          centerTitle: true,
+          title: Text('Mi Barrio!', style: TextStyle(color: Colors.black),),
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {},
+                child: Icon(
+                  Icons.search,
+                  size: 26.0,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {},
+                child: Icon(
+                    Icons.shopping_cart,
+                    color: Colors.black,
+                ),
+              )
+            ),
+          ],
+        ),
