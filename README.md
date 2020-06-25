@@ -26,7 +26,6 @@ A new Flutter project.
 - [ ] Mis ventas
 - [ ] Mis compras
 - [ ] Mi perfil
-- [ ] 
 ## Modelos de datos (objetos json)
 - [x] productos
 - [ ] Tiendas
