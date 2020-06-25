@@ -1,5 +1,5 @@
 // To parse this JSON data, do
-// Devuelve objeto con lista de vendedores
+//
 //     final vendors = vendorsFromJson(jsonString);
 
 import 'dart:convert';
@@ -44,7 +44,7 @@ class Vendors {
   String url;
   DateTime registered;
   String status;
-  List<String> roles;
+  dynamic roles;
   Map<String, bool> allcaps;
   String timezoneString;
   String gmtOffset;
@@ -68,7 +68,7 @@ class Vendors {
     url: json["url"],
     registered: DateTime.parse(json["registered"]),
     status: json["status"],
-    roles: List<String>.from(json["roles"].map((x) => x)),
+    roles: json["roles"],
     allcaps: Map.from(json["allcaps"]).map((k, v) => MapEntry<String, bool>(k, v)),
     timezoneString: json["timezone_string"],
     gmtOffset: json["gmt_offset"],
@@ -93,7 +93,7 @@ class Vendors {
     "url": url,
     "registered": registered.toIso8601String(),
     "status": status,
-    "roles": List<dynamic>.from(roles.map((x) => x)),
+    "roles": roles,
     "allcaps": Map.from(allcaps).map((k, v) => MapEntry<String, dynamic>(k, v)),
     "timezone_string": timezoneString,
     "gmt_offset": gmtOffset,
@@ -233,6 +233,22 @@ class Payment {
     "destination_currency": destinationCurrency,
     "iban": iban,
     "paypal_email": paypalEmail,
+  };
+}
+
+class RolesClass {
+  RolesClass({
+    this.the1,
+  });
+
+  String the1;
+
+  factory RolesClass.fromJson(Map<String, dynamic> json) => RolesClass(
+    the1: json["1"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "1": the1,
   };
 }
 
