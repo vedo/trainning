@@ -16,9 +16,9 @@ A new Flutter project.
 - [ ] Crear usuario
 - [ ] Borrar usuario
 - [ ] modificar usuario
-  [ ] Medios de pago
-  [ ] pendiente / aprobado
-  [ ] Manejo de stock
+- [ ] Medios de pago
+- [ ] Pendiente / Aprobado
+- [ ] Manejo de stock
 ## Vistas
 - [ ] VIEWS
 - [ ] Full screen
