@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:trainning/paginas/11_CreateUser.dart';
+import 'package:trainning/paginas/imagePick.dart';
 import 'package:trainning/recursos/StandardMenu.dart';
-
 import 'package:trainning/paginas/00_LogIn.dart';
 import 'package:trainning/paginas/01_Stores.dart';
 import 'package:trainning/paginas/02_Map.dart';
@@ -19,15 +19,17 @@ void main(){
       initialRoute: '/',
       routes: {
         '/':                (context) => StandardMenu( contenido:LogInMenu(),         showMenus: false,),
+        '/CreateUser':      (context) => CreateUser(),
         '/MiTienda':        (context) => StandardMenu( contenido: MiTienda(),         appBarTitle: 'Mi Tienda',),
         '/ListaTiendas':    (context) => StandardMenu( contenido: StoreList(),        appBarTitle: 'Lista de Tiendas',),
-        '/Mapa':            (context) => StandardMenu( contenido: PantallaMaps(),     appBarTitle: 'Mapa',),
+        '/Mapa':            (context) => StandardMenu( contenido: PantallaMaps(),     appBarTitle: 'Mapa del Barrio',),
         '/MisAnuncios':     (context) => StandardMenu( contenido: MisAnuncios(),      appBarTitle: 'Mis Anuncios',),
         '/HistorialVentas': (context) => StandardMenu( contenido: HistorialVentas(),  appBarTitle: 'Historial de Ventas',),
         '/CrearAnuncio':    (context) => StandardMenu( contenido: CrearAnuncio(),     appBarTitle: 'CrearAnuncio',),
         '/Compras':         (context) => StandardMenu( contenido: Compras(),          appBarTitle: 'Compras',),
         '/Perfil':          (context) => StandardMenu( contenido: ProfileMenu(),      appBarTitle: 'Mi Perfil',),
         '/DetalleProducto': (context) => StandardMenu( contenido: DetalleProducto(),  appBarTitle: 'Detalle Producto',),
+        '/imagePick':       (context) => StandardMenu( contenido: ImagePick(),        appBarTitle: 'Selecciona la imagen',),
       },
     )
   );

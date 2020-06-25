@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 //import 'package:trainning/recursos/constant.dart';
-import 'package:trainning/claves.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:trainning/recursos/ScreenArgument.dart';
+import 'package:trainning/recursos/client.dart';
+
 
 class StoreList extends StatefulWidget {
+  
   @override
   _StoreListState createState() => _StoreListState();
 } // Store List Stateful
 
 class _StoreListState extends State<StoreList> {
-  
+
   @override
   Widget build(BuildContext context) {
+
     return Expanded(
       child: Container( // Lista de tinedas 
         child: FutureBuilder(
@@ -76,6 +79,7 @@ class Tienda extends StatelessWidget {
 } // Tienda
 
 class TarjetaProducto extends StatelessWidget {
+  
   final String nombreProducto;
   final String precioProducto;
   final String idProducto;
@@ -207,3 +211,4 @@ Widget construirListaDeProductos(BuildContext context, AsyncSnapshot snapshot) {
     },
   );
 } // construirListaDeProductos
+

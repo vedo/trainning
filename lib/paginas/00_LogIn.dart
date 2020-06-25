@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:trainning/recursos/constant.dart';
 
+
 final double buttonWidth = 250;
 final double buttonHeight = 40;
 
@@ -14,13 +15,14 @@ class LogInMenu extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    
                     ButtonTheme(
                       minWidth: buttonWidth,
                       height: buttonHeight,
                       child: RaisedButton(
                         color: buttonGreen,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.popAndPushNamed(context, '/CreateUser');
+                        },
                         child: Text(
                           'Crear cuenta', 
                           style: TextStyle(fontSize: 20)

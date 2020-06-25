@@ -35,7 +35,6 @@ class StandardMenu extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-
             if( this.showMenus ) ...[
               if( this.showAppBar ) ...[
                 CustomAppBar(titulo: this.appBarTitle),
@@ -43,7 +42,7 @@ class StandardMenu extends StatelessWidget {
               if( this.showMenu ) ...[
                 CustomMenu(),
               ],
-              SizedBox(height: 160,),
+              SizedBox(height: 0,),
             ]else ...[
               SizedBox(height: 350,),
             ],

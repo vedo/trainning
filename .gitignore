@@ -21,6 +21,14 @@
 #.vscode/
 
 lib/claves.dart
+build/
+ios/
+assets/
+gradle/
+app/
+.vscode/
+.dart_tool/
+.idea/
 
 # Flutter/Dart/Pub related
 **/doc/api/

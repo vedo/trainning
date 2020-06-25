@@ -4,7 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:trainning/recursos/constant.dart';
 import 'package:trainning/claves.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
+import 'package:trainning/recursos/client.dart';
 
 
 class PantallaMaps extends StatefulWidget {
