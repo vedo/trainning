@@ -13,6 +13,7 @@ import 'package:trainning/modelos/products.dart';
 import 'package:trainning/modelos/vendors.dart';
 
 final cliente = ClientApi();
+
 class ClientApi{
   String host;
   String endPoint;
@@ -20,7 +21,7 @@ class ClientApi{
   ClientApi();
   //AUTHS
   Future<LogCreateUser> createUser({String email, String password, String username}) async {
-    final storage = new FlutterSecureStorage();
+    //final storage = new FlutterSecureStorage();
     String url = "https://pancolor.cl/?rest_route=/simple-jwt-login/v1/users";
     Map<String, String> match = {
       "user_login": username,
@@ -117,14 +118,14 @@ class ClientApi{
 
   //Este es el centro de los get a la API. Lo hace a través de oauth1 encriptado en base64encode
   Future<String> getResp(String endPoint) async {
-    String bearerToken = 'Bearer ' + 'Aq7ltD1aMdZb';
+    String bearerToken = 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvcGFuY29sb3IuY2wiLCJpYXQiOjE1OTI4NDE1ODQsIm5iZiI6MTU5Mjg0MTU4NCwiZXhwIjoxNTkzNDQ2Mzg0LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.WNYq555MKC_fum5zgZL9-_BftZW0l0D10L8ZsTLfo18';
     http.Response resp = await http.get('https://pancolor.cl/wp-json/$endPoint',
         headers: <String, String>{'authorization': bearerToken},);
     return resp.body;
     }
 
   Future<String> postResp(String endPoint) async{
-    String bearerToken = 'Bearer ' + 'Aq7ltD1aMdZb';
+    String bearerToken = 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvcGFuY29sb3IuY2wiLCJpYXQiOjE1OTI4NDE1ODQsIm5iZiI6MTU5Mjg0MTU4NCwiZXhwIjoxNTkzNDQ2Mzg0LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.WNYq555MKC_fum5zgZL9-_BftZW0l0D10L8ZsTLfo18';
     http.Response resp = await http.get('https://pancolor.cl/wp-json/$endPoint',
         headers: <String, String>{'authorization': bearerToken}, );
     return resp.body;

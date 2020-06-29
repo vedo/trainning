@@ -1,108 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:trainning/recursos/constant.dart';
+import 'package:trainning/recursos/tarjetas.dart';
+
 
 class Compras extends StatelessWidget {
+  final List<String> productos = ["Pie de limón", "Tiramisú", "Torta tres leches", "Cus cus"];
+  final List<String> fechas = ["07/05/2019", "12/09/2014", "22/11/2020", "03/03/2013"];
+  final List<String> precios = ["1.990", "3.500", "12.850", "15.990"];
+  final List<String> vistos = ["2", "5", "3", "2"];
+
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-
-      child: Center(
-
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 10,),
-            
-            Expanded(
-              child: Container(
-                child: ListView(
-                  padding: EdgeInsets.only(right: 20, left: 20, top: 10),
-                  children: <Widget>[
-                    TarjetaCompras(),
-                    TarjetaCompras(),
-                    TarjetaCompras(),
-                    TarjetaCompras(),
-                    TarjetaCompras(),
-                    TarjetaCompras(),
-                    TarjetaCompras(),
-                    TarjetaCompras(),
-                  ],
-                ),
+    return Center(
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: topPadding,),
+          Titulo1(titulo: "Compras",),
+          SizedBox(height: 20,),
+          
+          SizedBox(height: 10,),
+          Expanded(
+            child: Container(
+              child: ListView(
+                padding: EdgeInsets.only(right: 20, left: 20, top: 10),
+                children: productos.map((producto){
+                  int index = productos.indexOf(producto);
+                  return Tarjeta2(buttonText: "Editar", cuerpo: <Widget>[
+                    Text(fechas[index]),
+                    Text(producto),
+                    Text("\$" + precios[index]),
+                    Text("Visto por: " + vistos[index])
+                  ],);
+                }).toList()
               ),
-            )
-
-            
-          ],
-        ),
+            ),
+          )
+        ],
       ),
-    );
-  }
-}
-
-class TarjetaCompras extends StatelessWidget {
-  const TarjetaCompras({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 15),
-      height: 150,
-      child: Stack(children: <Widget>[
-        
-        FractionallySizedBox(
-          widthFactor: 0.8,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Colors.grey,
-            ),
-          ),
-        ),
-
-        Align(
-          alignment: Alignment.centerRight,
-          child: FractionallySizedBox(
-              widthFactor: 0.5,
-              heightFactor: 0.9,
-              child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: Colors.lightBlue[200],
-              ),
-            ),
-          ),
-        ),
-    
-
-        Positioned(
-          top: 10,
-          left: 10,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[          
-              Text("08/06/2020"),
-              Text("Pie de limón (x2)"),
-              Text("\$5.690"),
-              Text("Realizada")
-            ],
-          ),
-        ),
-
-       
-        Positioned(
-          left: 0,
-          bottom: 0,
-          child: FlatButton(
-            padding: EdgeInsets.zero,
-            onPressed: (){
-              Navigator.pushNamed(context, '/DetalleProducto',);
-            },
-            child: Text(
-              "Ver"
-            ),
-          ),
-        ),
-      ],),
     );
   }
 }

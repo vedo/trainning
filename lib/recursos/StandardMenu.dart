@@ -35,11 +35,11 @@ class StandardMenu extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            if( this.showMenus ) ...[
-              if( this.showAppBar ) ...[
+            if ( this.showMenus ) ...[
+              if ( this.showAppBar ) ...[
                 CustomAppBar(titulo: this.appBarTitle),
               ],
-              if( this.showMenu ) ...[
+              if ( this.showMenu ) ...[
                 CustomMenu(),
               ],
               SizedBox(height: 0,),
@@ -120,7 +120,7 @@ class CustomBottomBar extends StatelessWidget {
       ),
     );
   }
-}
+} // Custom bottom bar
 
 class CustomAppBar extends StatelessWidget {
   final String titulo;

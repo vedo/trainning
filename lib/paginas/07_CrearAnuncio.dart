@@ -1,9 +1,10 @@
-import 'dart:convert';
+//import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:trainning/recursos/client.dart';
+import 'package:trainning/recursos/constant.dart';
 
 final double buttonWidth = 250;
 final double buttonHeight = 40;
@@ -44,13 +45,9 @@ class _CrearAnuncioState extends State<CrearAnuncio> {
   @override
   Widget build(BuildContext context) {
     return Form(
-
-        child: Expanded(
         child: Padding(
-          padding: EdgeInsets.only(top: 20, left: 20, right: 20),
+          padding: EdgeInsets.only(top: topPadding, left: 20, right: 20),
             child: ListView(
-              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Text(
                   "Nuevo Anuncio",
@@ -183,9 +180,7 @@ class _CrearAnuncioState extends State<CrearAnuncio> {
               ],
           ),
         ),
-        ),
       );
-
   }
 
   //BOTTOM SHEET

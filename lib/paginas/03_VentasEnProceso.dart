@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:trainning/recursos/tarjetas.dart';
 
-class HistorialVentas extends StatelessWidget {
+class VentasEnProceso extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
         child: Column(
           children: <Widget>[
+
             SizedBox(height: 20,),
-            
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -34,10 +34,10 @@ class HistorialVentas extends StatelessWidget {
                   child: RaisedButton(
                     color: Color(0xFF5586A2),
                     onPressed: () {
-                      Navigator.popAndPushNamed(context, '/MiTienda');
+                      Navigator.popAndPushNamed(context, '/HistorialVentas');
                     },
                     child: Text(
-                      'Ventas en Proceso', 
+                      'Historial de Ventas', 
                       style: TextStyle(fontSize: 15, color: Colors.white)
                     ),
                   ),
@@ -47,7 +47,7 @@ class HistorialVentas extends StatelessWidget {
             
             SizedBox(height: 10,),
             Text(
-              "Historial de Ventas",
+              "Ventas en proceso",
               style: TextStyle( fontSize: 20, color: Color(0xFFDAC8CF) ),
             ),
 
@@ -56,37 +56,39 @@ class HistorialVentas extends StatelessWidget {
                 child: ListView(
                   padding: EdgeInsets.only(right: 20, left: 20, top: 10),
                   children: <Widget>[
-                    Tarjeta2( buttonText: "ver", cuerpo: <Widget>[
+                    Tarjeta2(buttonText: "Ver", cuerpo: <Widget>[
                       Text("08/06/2020"),
-                      Text("Pie de limón (x2)"),
+                      Text("Pie de limón"),
                       Text("\$5.690"),
-                      Text("Realizada")
+                      Text("En Proceso")
                     ],),
-                    Tarjeta2( buttonText: "ver", cuerpo: <Widget>[
+                    Tarjeta2(buttonText: "Ver", cuerpo: <Widget>[
                       Text("08/06/2020"),
-                      Text("Pie de limón (x2)"),
+                      Text("Pie de limón"),
                       Text("\$5.690"),
-                      Text("Realizada")
+                      Text("En Proceso")
                     ],),
-                    Tarjeta2( buttonText: "ver", cuerpo: <Widget>[
+                    Tarjeta2(buttonText: "Ver", cuerpo: <Widget>[
                       Text("08/06/2020"),
-                      Text("Pie de limón (x2)"),
+                      Text("Pie de limón"),
                       Text("\$5.690"),
-                      Text("Realizada")
+                      Text("En Proceso")
                     ],),
-                    Tarjeta2( buttonText: "ver", cuerpo: <Widget>[
+                    Tarjeta2(buttonText: "Ver", cuerpo: <Widget>[
                       Text("08/06/2020"),
-                      Text("Pie de limón (x2)"),
+                      Text("Pie de limón"),
                       Text("\$5.690"),
-                      Text("Realizada")
+                      Text("En Proceso")
                     ],),
                   ],
                 ),
               ),
             )
 
+            
           ],
         ),
       );
   }
 }
+

@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:trainning/recursos/constant.dart';
-import 'package:trainning/claves.dart';
+//import 'package:trainning/recursos/constant.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:trainning/recursos/client.dart';
 
@@ -26,6 +25,9 @@ class _PantallaMapsState extends State<PantallaMaps> {
     LatLng(-22.4517295,-68.9191101),
     LatLng(-22.4564465,-68.9198948),
     LatLng(-22.4553776,-68.9216041),   
+    LatLng(-22.4553776,-68.9216041),   
+    LatLng(-22.4553776,-68.9216041),   
+    LatLng(-22.4553776,-68.9216041),   
   ];
 
   String nombreTienda = "";
@@ -43,9 +45,6 @@ class _PantallaMapsState extends State<PantallaMaps> {
             Marker(
               markerId: MarkerId(idTienda),
               position: posiciones[i],
-              /* infoWindow: InfoWindow(
-                title: resp[i].login.toString(),
-              ), */
               onTap: (){
                 setState(() {
                   closeWindow = false;
@@ -104,8 +103,7 @@ class _PantallaMapsState extends State<PantallaMaps> {
   @override
   Widget build(BuildContext context) {
     obtenerTiendas();
-    return Expanded(
-      child: Container(
+    return Container(
         child: Stack(
           children: <Widget>[
             GoogleMap(
@@ -128,8 +126,7 @@ class _PantallaMapsState extends State<PantallaMaps> {
             )
           ],
         ),
-      ),
-    );
+      );
   
   } // Build Pantalla Map State
   
@@ -295,7 +292,7 @@ class TarjetaProducto extends StatelessWidget {
             child: FlatButton(
               child: Text("Ver producto"),
               onPressed: () {
-                Navigator.pushNamed(context, '/DetalleProducto',);
+                Navigator.popAndPushNamed(context, '/DetalleProducto',);
               },
             ),
           )
