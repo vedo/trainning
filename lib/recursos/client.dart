@@ -119,10 +119,21 @@ class ClientApi{
   //Este es el centro de los get a la API. Lo hace a través de oauth1 encriptado en base64encode
   Future<String> getResp(String endPoint) async {
     String bearerToken = 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvcGFuY29sb3IuY2wiLCJpYXQiOjE1OTI4NDE1ODQsIm5iZiI6MTU5Mjg0MTU4NCwiZXhwIjoxNTkzNDQ2Mzg0LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.WNYq555MKC_fum5zgZL9-_BftZW0l0D10L8ZsTLfo18';
-    http.Response resp = await http.get('https://pancolor.cl/wp-json/$endPoint',
-        headers: <String, String>{'authorization': bearerToken},);
+    http.Response resp = await http.get(
+      'https://pancolor.cl/wp-json/$endPoint',
+      headers: <String, String>{'authorization': bearerToken},
+    );
     return resp.body;
-    }
+  }
+
+  tokenGetResp(String endPoint, String token) async {
+    String bearerToken = 'Bearer ' + token;
+    var resp = await http.get(
+      'https://algocerca.cl/wp-json/$endPoint',
+      headers: <String, String>{'authorization': bearerToken},
+    );
+    return resp;
+  }
 
   Future<String> postResp(String endPoint) async{
     String bearerToken = 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvcGFuY29sb3IuY2wiLCJpYXQiOjE1OTI4NDE1ODQsIm5iZiI6MTU5Mjg0MTU4NCwiZXhwIjoxNTkzNDQ2Mzg0LCJkYXRhIjp7InVzZXIiOnsiaWQiOiIxIn19fQ.WNYq555MKC_fum5zgZL9-_BftZW0l0D10L8ZsTLfo18';

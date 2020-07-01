@@ -43,4 +43,12 @@ const LinearGradient gradientenNaranjoDiagonal = LinearGradient(
   end: Alignment.bottomRight,
 );
 
+BoxDecoration imagenDeFondo = BoxDecoration(
+  image: DecorationImage(
+    image: AssetImage("assets/img/SeamlessBG.png"),
+    fit: BoxFit.cover,
+    colorFilter: new ColorFilter.mode(Colors.red[100].withOpacity(0.05), BlendMode.dstIn),
+  ),
+);
+
 

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-//import 'package:trainning/recursos/constant.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:trainning/recursos/client.dart';
 import 'package:trainning/recursos/constant.dart';
 import 'package:trainning/recursos/tarjetas.dart';
-
 
 class StoreList extends StatefulWidget {
   @override

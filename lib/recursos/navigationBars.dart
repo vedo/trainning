@@ -77,8 +77,8 @@ class CustomMenu extends StatelessWidget {
 }
 
 class CustomAppBar extends StatelessWidget {
-  final List<IconData> iconosAppbar = [Icons.search, Icons.shopping_cart, Icons.notifications];
-  final List<VoidCallback> accionesIconos = [(){},(){},(){}];
+  final List<IconData> iconosAppbar = [Icons.search, Icons.notifications];
+  final List<VoidCallback> accionesIconos = [(){},(){},];
   final String titulo;
   CustomAppBar({
     this.titulo,

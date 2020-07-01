@@ -20,16 +20,18 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  carousel_slider: ^2.2.1
-  intl: ^0.16.1
-  flutter_spinkit: ^4.1.2+1
+  carousel_slider: ^2.2.1       # Carousel usado en la página de pedidos
+  intl: ^0.16.1                 # ¿?
+  flutter_spinkit: ^4.1.2+1     # Animaciones de pantallas cargando
   oauth1: ^1.0.1
-  http: ^0.12.1
+  http: ^0.12.1                 # Para hacer llamadas http a la api WP
+  shared_preferences: ^0.5.7+3  # Para tener un espacio persistente en la app, usado para almacenar el token
   image_picker:
   path_provider:
   flutter_secure_storage:
   flutter:
     sdk: flutter
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3

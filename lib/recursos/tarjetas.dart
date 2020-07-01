@@ -158,6 +158,84 @@ class Tarjeta2 extends StatelessWidget {
   }
 }
 
+class Tarjeta3 extends StatelessWidget {
+  final String buttonText;
+  final List<Widget> cuerpo;
+  final String id;
+  final String imagenProducto;
+
+  const Tarjeta3({
+    this.buttonText,
+    this.cuerpo,
+    @required this.id,
+    this.imagenProducto,
+  });
+  
+  @override
+  Widget build(BuildContext context) {
+    double fraccionImagen = 0.45;
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
+      height: 150,
+      child: Stack(children: <Widget>[
+        
+        Align( //Espacio de texto
+          alignment: Alignment.centerRight,
+          child: FractionallySizedBox(
+            widthFactor: 1 - fraccionImagen,
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(bottomRight: Radius.circular(10), topRight: Radius.circular(10)),
+                color: Colors.white,
+              ),
+              child: Stack(children: <Widget>[
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: this.cuerpo,
+                  ),
+                ),
+                Positioned(
+                  left: 0,
+                  bottom: 0,
+                  child: FlatButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: (){
+                      Navigator.popAndPushNamed(
+                        context, '/EditarAnuncio',
+                        arguments: ScreenArguments(id: this.id),
+                      );
+                    },
+                    child: Text( this.buttonText ),
+                  ),
+                ),
+              ],),
+            ),
+          ),
+        ),
+
+        Align( //Espacio Imágen
+          alignment: Alignment.centerLeft,
+          child: FractionallySizedBox(
+              widthFactor: fraccionImagen,
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), topLeft: Radius.circular(10)),
+                  image: DecorationImage(
+                    image: NetworkImage(this.imagenProducto),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+            ),
+          ),
+        ),
+      ],),
+    );
+  }
+}
+
 
 class Titulo1 extends StatelessWidget {
   final String titulo;

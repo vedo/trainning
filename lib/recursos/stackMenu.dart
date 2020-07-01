@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:trainning/recursos/constant.dart';
 import 'package:trainning/recursos/navigationBars.dart';
+
+SharedPreferences sharedPreferences;
 
 class StandardMenu extends StatelessWidget {
 
@@ -102,14 +105,6 @@ class CustomClipPath extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
-BoxDecoration imagenDeFondo = BoxDecoration(
-  image: DecorationImage(
-    image: AssetImage("assets/img/SeamlessBG.png"),
-    fit: BoxFit.cover,
-    colorFilter: new ColorFilter.mode(Colors.red[100].withOpacity(0.05), BlendMode.dstIn),
-  ),
-);
-
 class MiScaffold extends StatefulWidget {
   const MiScaffold({
     Key key,
@@ -123,6 +118,13 @@ class MiScaffold extends StatefulWidget {
 class _MiScaffoldState extends State<MiScaffold> {
   static final List<String> drawerMenu = ["Mi Perfil", "Mis Anuncios", "Pedidos", "Mis Compras", "Mapa de la ciudad", "Mercado", "Mi Barrio"];
   static final List<IconData> drawerIcons = [Icons.face, Icons.shopping_cart, Icons.laptop, Icons.laptop, Icons.laptop, Icons.laptop, Icons.laptop];
+  
+  destroySession() async{
+    sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.clear();
+    Navigator.popAndPushNamed(context, '/');
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,11 +149,11 @@ class _MiScaffoldState extends State<MiScaffold> {
               title: Text('Mi Perfil'),
             ),
             ListTile(
-              leading: Icon(Icons.notifications),
+              leading: Icon(Icons.record_voice_over),
               title: Text('Mis Anuncios'),
             ),
             ListTile(
-              leading: Icon(Icons.settings),
+              leading: Icon(Icons.ring_volume),
               title: Text('Pedidos'),
             ),
             ListTile(
@@ -159,7 +161,7 @@ class _MiScaffoldState extends State<MiScaffold> {
               title: Text('Mis Compras'),
             ),
             ListTile(
-              leading: Icon(Icons.map),
+              leading: Icon(Icons.location_on),
               title: Text('Mapa de la ciudad'),
             ),
             ListTile(
@@ -167,8 +169,21 @@ class _MiScaffoldState extends State<MiScaffold> {
               title: Text('Mercado'),
             ),
             ListTile(
-              leading: Icon(Icons.people),
+              leading: Icon(Icons.supervised_user_circle),
               title: Text('Mi Barrio'),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Ajustes'),
+            ),
+            ListTile(
+              leading: Icon(Icons.power_settings_new),
+              title: Text('Cerrar Sesión'),
+              onTap: (){destroySession();},
+            ),
+            ListTile(
+              leading: Icon(Icons.help),
+              title: Text('Ayuda'),
             ),
           ] ,
         ),
@@ -186,24 +201,24 @@ class _MiScaffoldState extends State<MiScaffold> {
   }
 }
 
-
-  /* final Iterable<Widget> menus = drawerMenu.map((titulo){
-    int index = drawerMenu.indexOf(titulo);
-    return ListTile(
-      leading: Icon(drawerIcons[index]),
-      title: Text(titulo),
-    );
-  });
-  List<Widget> dHeader = [
-    DrawerHeader(
-      decoration: BoxDecoration(
-        color: Colors.blue,
+// INTENTO DE ENLISTAR LOS MENUS DEL DRAWER
+/* final Iterable<Widget> menus = drawerMenu.map((titulo){
+  int index = drawerMenu.indexOf(titulo);
+  return ListTile(
+    leading: Icon(drawerIcons[index]),
+    title: Text(titulo),
+  );
+});
+List<Widget> dHeader = [
+  DrawerHeader(
+    decoration: BoxDecoration(
+      color: Colors.blue,
+    ),
+    child: Text(
+      'Drawer Header',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 24,
       ),
-      child: Text(
-        'Drawer Header',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-        ),
-      ),
-    ),]; */
+    ),
+  ),]; */
