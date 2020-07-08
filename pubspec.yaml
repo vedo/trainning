@@ -29,6 +29,7 @@ dependencies:
   image_picker:
   path_provider:
   flutter_secure_storage:
+  simple_rsa:
   flutter:
     sdk: flutter
 

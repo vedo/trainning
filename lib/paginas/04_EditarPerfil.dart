@@ -1,72 +1,86 @@
 import 'package:flutter/material.dart';
+import 'package:trainning/modelos/profile.dart';
+import 'package:trainning/recursos/client.dart';
+
 
 class ProfileMenu extends StatelessWidget {
+
+
   @override
+
+
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Center(
-          child: ListView(
-            //crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              
-              Text(
-                "Edita tu cuenta",
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey,
-                ),
-              ),
+        child: Center( child:
+        FutureBuilder(
+        future: cliente.getMyProfile(),
+            initialData: cliente.getMyProfile(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
 
-              SizedBox(height: 10,),
-              
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  RoundedEditButton(
-                    icono: Icon(Icons.person),
-                  ),
+      if (snapshot.hasData) {
 
-                  RoundedEditButton(
-                    icono: Icon(Icons.home),
-                  ),
-                ],
-              ),
+        if (snapshot.data!=null) {
 
-              SizedBox(height: 10,),
-              TitledTextField(
-                titulo: "Nombre",
-                valor: "Víctor Diaz",
-              ),
+    Profile data = snapshot.data;
 
-              SizedBox(height: 10,),
-              TitledTextField(
-                titulo: "Apellidos",
-                valor: "Díaz Osorio",
-              ),
+    return ListView(
+    //crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+    Text(
+    "Edita tu cuenta",
+    style: TextStyle(
+    fontSize: 25,
+    fontWeight: FontWeight.bold,
+    color: Colors.grey,
+    ),
+    ),
+    SizedBox(height: 10,),
+    Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: <Widget>[
+    RoundedEditButton(
+    icono: Icon(Icons.person),
+    ),
+    RoundedEditButton(
+    icono: Icon(Icons.home),
+    ),
+    ],
+    ),
+    SizedBox(height: 10,),
+    TitledTextField(
+    titulo: "Nombre",
+    valor: data.niceName,
+    ),
+    SizedBox(height: 10,),
+    TitledTextField(
+    titulo: "Apellidos",
+    valor: data.lastName,
+    ),
+    SizedBox(height: 10,),
+    TitledTextField(
+    titulo: "Número de teléfono",
+    valor: data.address.phone,
+    ),
+    SizedBox(height: 10,),
+    TitledTextField(
+    titulo: "Correo Electrónico",
+    valor: data.email,
+    ),
+    SizedBox(height: 10,),
+    TitledTextField(
+    titulo: "Contraseña",
+    valor: "********",
+    ),
+    ],
+    );
+    }
 
-              SizedBox(height: 10,),
-              TitledTextField(
-                titulo: "Número de teléfono",
-                valor: "+56 9 82287003",
-              ),
+    else {
+      return CircularProgressIndicator();
+    }}}),
 
-              SizedBox(height: 10,),
-              TitledTextField(
-                titulo: "Correo Electrónico",
-                valor: "victor.diazosorio@gmail.com",
-              ),
-
-              SizedBox(height: 10,),
-              TitledTextField(
-                titulo: "Contraseña",
-                valor: "********",
-              ),
-              
-            ],
-          )
         ),
       ),
     );

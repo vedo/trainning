@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:trainning/recursos/constant.dart';
 import 'package:trainning/recursos/tarjetas.dart';
-import 'package:trainning/recursos/client2.dart';
+import 'package:trainning/recursos/client.dart';
 // paquetes para comunicación con servidor
 import 'dart:convert';
 
@@ -12,10 +12,10 @@ class MisAnuncios extends StatefulWidget {
 }
 
 class _MisAnunciosState extends State<MisAnuncios> {
-  
+
   FutureBuilder futureBuilderAnuncios(){
     return FutureBuilder(
-      future: servidor.getMyProducts(),
+      future: cliente.getMyProducts(),
       builder: (BuildContext context,  AsyncSnapshot snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.none:
@@ -27,31 +27,10 @@ class _MisAnunciosState extends State<MisAnuncios> {
             );
           default:
             if (snapshot.hasError){
-              return Text('Error: ${snapshot.error}');
+              return Text('Error po: ${snapshot.error}');
             }
             else{
-              var jsonResponse = json.decode(snapshot.data.body);
-              if (snapshot.data.statusCode != 200 ){
-                return Text(
-                  'Status: ' + snapshot.data.statusCode.toString() + '\n' + 
-                  jsonResponse.toString()
-                );
-              } else{
-                return ListView(
-                  padding: EdgeInsets.only(top: 10),
-                  children: List<Widget>.from(jsonResponse.map((item){
-                    return Tarjeta3(
-                      imagenProducto: item["images"][0]["src"],
-                      id: item["id"].toString(),
-                      buttonText: "Editar", 
-                      cuerpo: <Widget>[
-                        Text(item["name"]),
-                        Text('\$ ' + item["price"].toString()),
-                      ],
-                    );
-                  }))
-                );
-              }
+                return construirListaDeProductos(context, snapshot);
             }
         } // FutureBuilder builder
       },
@@ -101,3 +80,19 @@ class _MisAnunciosState extends State<MisAnuncios> {
   }
 }
 
+Widget construirListaDeProductos(BuildContext context, AsyncSnapshot snapshot) {
+
+  return ListView.builder(
+    scrollDirection: Axis.vertical,
+    itemCount: snapshot.data.length,
+    itemBuilder: (BuildContext context, int index) {
+      String idProducto = snapshot.data[index].id.toString();
+      return Tarjeta1(
+        nombreProducto: snapshot.data[index].name.toString(),
+        precioProducto: snapshot.data[index].price.toString(),
+        idProducto: idProducto,
+        imagenProducto: NetworkImage(snapshot.data[index].images[0].src),
+      );
+    },
+  );
+}

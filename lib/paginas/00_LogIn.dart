@@ -1,11 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:trainning/recursos/client.dart';
 import 'package:trainning/recursos/constant.dart';
-// paquetes para comunicación con servidor
-import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 final double buttonWidth = 250;
 final double buttonHeight = 40;
@@ -28,12 +26,15 @@ class _LogInMenuState extends State<LogInMenu> {
   @override
   void initState() {
     super.initState();
-    loggedMove();   
+    loggedMove();
   }
 
   loggedMove() async{
+
     sharedPreferences = await SharedPreferences.getInstance();
-    if( sharedPreferences.getString("token") != null ){
+    String token = sharedPreferences.getString("token");
+    print("Acá el token: $token");
+    if( await checkLogIn() ){
       Navigator.popAndPushNamed(context, "/Anuncios");
     }
   }
@@ -43,18 +44,28 @@ class _LogInMenuState extends State<LogInMenu> {
       'username': emailController.text,
       'password': passwordController.text
     };
+    Map respLogin = await cliente.login(credentials: data);
+    if (respLogin["token"] != null || respLogin["token"] != ""){      //Si está ok, guardamos el token para hacer el login permanente
+      sharedPreferences = await SharedPreferences.getInstance();
+      sharedPreferences.setString("token", respLogin["token"]);
+      Navigator.popAndPushNamed(context, "/Anuncios"); // y enviamos a /Anuncios
+    }
+    /*
+    //esto está muy bueno y simple, el unico problema es que las credenciales viajan sin encriptación
     var response = await http.post("https://algocerca.cl/wp-json/jwt-auth/v1/token", body: data);
     var jsonResponse = json.decode(response.body);
     if ( response.statusCode == 200 ){
       sharedPreferences.setString("token",             jsonResponse["token"]);
-      sharedPreferences.setString("user_nicename",     jsonResponse["user_nicename"]);
+      sharedPreferences.setString("nice_name",     jsonResponse["user_nicename"]);
       sharedPreferences.setString("user_display_name", jsonResponse["user_display_name"]);
       sharedPreferences.setString("user_display_name", jsonResponse["user_display_name"]);
       sharedPreferences.setString("user_id",           jsonResponse["user_id"]);
       Navigator.popAndPushNamed(context, "/Anuncios");
-    }else{
+    }
+    */
+    else{
       setState(() {
-        mensaje = jsonResponse["message"];
+        mensaje = respLogin["message"];
       });
     }
   }
@@ -102,7 +113,7 @@ class _LogInMenuState extends State<LogInMenu> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         mensaje == null ? Container() : Dialog(child: Text(mensaje),),
-        FormComponent(tipo: "boton", color: buttonGreen, texto: "Crear Cuenta", onPressed: (){},),
+        FormComponent(tipo: "boton", color: buttonGreen, texto: "Crear Cuenta", onPressed: (){Navigator.popAndPushNamed(context, "/CreateUser");},),
         FormComponent(tipo: "campoTexto", texto: "Nombre de Usuario", obscureText: false, controller: emailController,),
         FormComponent(tipo: "campoTexto", texto: "Contraseña", obscureText: true, controller: passwordController,),
         FormComponent(tipo: "boton", color: Color(0xFF15A1CA), texto: "Ingresar", onPressed: (){tryLogIn();},),

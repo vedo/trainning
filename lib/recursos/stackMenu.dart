@@ -147,6 +147,7 @@ class _MiScaffoldState extends State<MiScaffold> {
             ListTile(
               leading: Icon(Icons.face),
               title: Text('Mi Perfil'),
+              onTap: (){ Navigator.popAndPushNamed(context, "/Perfil");},
             ),
             ListTile(
               leading: Icon(Icons.record_voice_over),

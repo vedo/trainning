@@ -14,14 +14,23 @@ savedCredentials() async {
 }
 
 class Servidor{
+
   String bearerToken = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYWxnb2NlcmNhLmNsIiwiaWF0IjoxNTkzNTEwMzQzLCJuYmYiOjE1OTM1MTAzNDMsImV4cCI6MTU5NDExNTE0MywiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiNCJ9fX0.S5v0PKyuQSJG0lRyw9o6t0ibeaoE3mC3N343m2ANq9o';
   //String bearerToken = 'Bearer $token';
 
-  getVendorProducts( String vendorId ) async{
+  getVendorProducts() async{
+    sharedPreferences = await SharedPreferences.getInstance();
+    Set<String> all = sharedPreferences.getKeys();
+    print(all.toString());
+    String id = sharedPreferences.getString("user_id");
+    print("esta es la id: $id");
+    String token = sharedPreferences.getString("token");
+    print("acá el token: $token");
+    String vendorId = sharedPreferences.getString("user_id");
     await savedCredentials();
     var response = await http.get(
       'https://algocerca.cl/wp-json/wc/v2/products/?vendor=$vendorId',
-      headers: <String, String>{'authorization': bearerToken,},
+      headers: <String, String>{'authorization': 'Bearer $token'},
     );
     //var jsonResponse = json.decode(response.body);
     return response;
@@ -29,7 +38,7 @@ class Servidor{
 
   getMyProducts(){
     //return getVendorProducts(myId);  
-    return getVendorProducts('2');  
+    return getVendorProducts();
   }
 
   getProductDetail( String productId ) async{

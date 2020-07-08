@@ -35,16 +35,17 @@ class _CrearAnuncioState extends State<CrearAnuncio> {
     });
   }
   Color labelImage = Colors.black;
-
   String titleProduct;
   String precio;
   String descripcion;
   String stock;
 
   final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
         child: Padding(
           padding: EdgeInsets.only(top: topPadding, left: 20, right: 20),
             child: ListView(
@@ -169,14 +170,14 @@ class _CrearAnuncioState extends State<CrearAnuncio> {
                       print("Form Valido");
                       // Acá se carga el proceso de api! luego envía un modal de exito o fracaso
                       // If the form is valid, display a Snackbar.
-                     cliente.postProductWithImage(imagePath: _image, nameProduct: titleProduct, description:  descripcion, regular_price: precio,  vendor:  2);
+                     cliente.postProductWithImage(imagePath: _image, nameProduct: titleProduct, description:  descripcion, regular_price: precio);
                       Scaffold.of(context)
                           .showSnackBar(SnackBar(content: Text('Subiendo producto')));
                     }
                   },
 
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 100,),
               ],
           ),
         ),
