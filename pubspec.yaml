@@ -26,6 +26,7 @@ dependencies:
   oauth1: ^1.0.1
   http: ^0.12.1                 # Para hacer llamadas http a la api WP
   shared_preferences: ^0.5.7+3  # Para tener un espacio persistente en la app, usado para almacenar el token
+  font_awesome_flutter: ^8.8.1
   image_picker:
   path_provider:
   flutter_secure_storage:

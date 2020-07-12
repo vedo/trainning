@@ -4,7 +4,6 @@ import 'package:trainning/recursos/constant.dart';
 import 'package:trainning/recursos/tarjetas.dart';
 import 'package:trainning/recursos/client.dart';
 // paquetes para comunicación con servidor
-import 'dart:convert';
 
 class MisAnuncios extends StatefulWidget {
   @override
@@ -49,7 +48,7 @@ class _MisAnunciosState extends State<MisAnuncios> {
           SizedBox(height: 10,),
           Expanded(
             child: Container(
-              child: futureBuilderAnuncios(),
+              //child: futureBuilderAnuncios(),
             ),
           )
         ],

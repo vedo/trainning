@@ -51,4 +51,12 @@ BoxDecoration imagenDeFondo = BoxDecoration(
   ),
 );
 
+BoxDecoration imagenDeFondoLogin = BoxDecoration(
+  image: DecorationImage(
+    image: AssetImage("assets/img/fondo-login.png"),
+    fit: BoxFit.cover,
+    //colorFilter: new ColorFilter.mode(Colors.red[100].withOpacity(0.05), BlendMode.dstIn),
+  ),
+);
+
 

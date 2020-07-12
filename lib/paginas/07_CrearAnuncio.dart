@@ -170,7 +170,7 @@ class _CrearAnuncioState extends State<CrearAnuncio> {
                       print("Form Valido");
                       // Acá se carga el proceso de api! luego envía un modal de exito o fracaso
                       // If the form is valid, display a Snackbar.
-                     cliente.postProductWithImage(imagePath: _image, nameProduct: titleProduct, description:  descripcion, regular_price: precio);
+                     cliente.postProductWithImage(imagePath: _image, nameProduct: titleProduct, description:  descripcion, regularPrice: precio);
                       Scaffold.of(context)
                           .showSnackBar(SnackBar(content: Text('Subiendo producto')));
                     }

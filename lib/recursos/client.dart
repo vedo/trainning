@@ -27,11 +27,11 @@ class ClientApi{
 
 
   //Esta es la funcion para enviar imagenes
-  postProductWithImage({File imagePath, String nameProduct, String type="simple", String regular_price, String description, int vendor}) async{
+  postProductWithImage({File imagePath, String nameProduct, String type="simple", String regularPrice, String description, int vendor}) async{
     //subimos la imagen
     String rawImageBody = await upload(imageFile: imagePath);
     Map jsonImageBody = jsonDecode(rawImageBody);
-    String rawProductBody = await postProduct(nameProduct: nameProduct, type: type, regular_price: regular_price, description: description, idImage: jsonImageBody["id"]);
+    String rawProductBody = await postProduct(nameProduct: nameProduct, type: type, regularPrice: regularPrice, description: description, idImage: jsonImageBody["id"]);
     Map jsonProductBody = jsonDecode(rawProductBody);
     print("esto es id image imagen");
     print( jsonImageBody['src'] );
@@ -41,7 +41,7 @@ class ClientApi{
   }
 
 
-  Future postProduct({String nameProduct, String type="simple", String regular_price, String description, int stock, int idImage}) async{
+  Future postProduct({String nameProduct, String type="simple", String regularPrice, String description, int stock, int idImage}) async{
     Future<String> postResp(String endPoint) async{
       sharedPreferences = await SharedPreferences.getInstance();
       String token = await sharedPreferences.getString("token");
@@ -49,7 +49,7 @@ class ClientApi{
       String bodyMap = jsonEncode({
         "name": "$nameProduct",
         "type": "$type",
-        "regular_price": "$regular_price",
+        "regular_price": "$regularPrice",
         "description": "$description",
         "short_description": "$description",
         "stock_quantity": 1,
@@ -97,9 +97,10 @@ class ClientApi{
   }
 
 
-  Future<Map> login({Map credentials}) async {    //Credentials debiera ser un mapa con username & password
+  Future<Map> login(Map credentials) async {    //Credentials debiera ser un mapa con username & password
     String url = "http://algocerca.cl:8080/login/";
     http.Response resp = await http.post(url, body: credentials);
+    print( resp.body.toString() );
     Map bodyLogin = jsonDecode(resp.body);     //Devuelve el map de la respuesta
     return bodyLogin;
   }
@@ -115,8 +116,7 @@ class ClientApi{
   Future<String> testValidation({@required String name, @required String password, @required String email}) async {
     String wholeText = "$name $password $email";
     String messageEcrpt = await rsa.encripter(wholeText);
-    Map<String, String> body = {
-      "message": messageEcrpt, };
+    Map<String, String> body = {"message": messageEcrpt, };
     String host = "http://algocerca.cl:8080/";
     String endPoint = "query/";
     http.Response resp = await http.post("$host$endPoint", body: body);

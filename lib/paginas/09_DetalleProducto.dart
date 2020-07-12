@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:trainning/recursos/constant.dart';
 import 'package:trainning/recursos/client2.dart';
-import 'package:trainning/recursos/ScreenArgument.dart';
 import 'dart:convert';
 
 class DetalleProducto extends StatelessWidget {
@@ -45,8 +44,6 @@ class DetalleProducto extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    ScreenArguments args = ModalRoute.of(context).settings.arguments;
-    String idProducto = args.idVendor;
   
     return Container(
       padding: EdgeInsets.only(top: topPadding, left: 15, right: 15),

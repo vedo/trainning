@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:trainning/paginas/11_CreateUser.dart';
-import 'package:trainning/paginas/imagePick.dart';
 import 'package:trainning/recursos/stackMenu.dart';
-import 'package:trainning/paginas/00_LogIn.dart';
-import 'package:trainning/paginas/01_Stores.dart';
-import 'package:trainning/paginas/02_Map.dart';
-import 'package:trainning/paginas/03_VentasEnProceso.dart';
-import 'package:trainning/paginas/04_EditarPerfil.dart';
-import 'package:trainning/paginas/05_MisAnuncios.dart';
+import 'package:trainning/paginas/imagePick.dart';
+
+import 'package:trainning/paginas/00_PrimeraPantalla.dart';
+import 'package:trainning/paginas/01_LogIn.dart';
+import 'package:trainning/paginas/02_CreateUser.dart';
+import 'package:trainning/paginas/03_MisAnuncios.dart';
+import 'package:trainning/paginas/04_Mercado.dart';
+import 'package:trainning/paginas/05_VentasEnProceso.dart';
 import 'package:trainning/paginas/06_HistorialVentas.dart';
 import 'package:trainning/paginas/07_CrearAnuncio.dart';
 import 'package:trainning/paginas/08_Compras.dart';
 import 'package:trainning/paginas/09_DetalleProducto.dart';
+import 'package:trainning/paginas/11_EditarPerfil.dart';
 import 'package:trainning/paginas/12_Pedidos.dart';
 import 'package:trainning/paginas/13_EditarAnuncio.dart';
+import 'package:trainning/paginas/14_Map.dart';
 
 
 void main(){ 
@@ -22,7 +24,8 @@ void main(){
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/':                (context) => LogInMenu(),
+        '/':                (context) => PrimeraPantalla(),
+        '/LogIn':           (context) => LogInMenu(),
         '/CreateUser':      (context) => CreateUser(),
         '/Anuncios':        (context) => StandardMenu( contenido: MisAnuncios(),     appBarTitle: 'Mis Anuncios',        menuType: "full", menuIndex: 0,),
         '/Pedidos':         (context) => StandardMenu( contenido: Pedidos(),         appBarTitle: 'Pedidos',             menuType: "full", menuIndex: 1,),
