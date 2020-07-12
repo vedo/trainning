@@ -36,7 +36,7 @@ class _LogInMenuState extends State<LogInMenu> {
       'password': password
     };
     
-    Map respLogin = await cliente.login(data);
+    Map respLogin = await cliente.login(credentials: data);
     if (respLogin["token"] != null || respLogin["token"] != ""){      //Si está ok, guardamos el token para hacer el login permanente
       sharedPreferences = await SharedPreferences.getInstance();
       /* sharedPreferences.setString("token", respLogin["token"]); */
