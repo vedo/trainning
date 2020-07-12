@@ -17,7 +17,8 @@ class LogInMenu extends StatefulWidget {
 class _LogInMenuState extends State<LogInMenu> {
   String mensaje;
   SharedPreferences sharedPreferences;
-  
+
+
   checkLogIn() async { // verdadero cuando hay un token
     sharedPreferences = await SharedPreferences.getInstance();
     return sharedPreferences.getString("token") != null;
@@ -30,9 +31,8 @@ class _LogInMenuState extends State<LogInMenu> {
   }
 
   loggedMove() async{
-
     sharedPreferences = await SharedPreferences.getInstance();
-    String token = sharedPreferences.getString("token");
+    String token = sharedPreferences.getString("access_token");
     print("Acá el token: $token");
     if( await checkLogIn() ){
       Navigator.popAndPushNamed(context, "/Anuncios");
@@ -45,9 +45,11 @@ class _LogInMenuState extends State<LogInMenu> {
       'password': passwordController.text
     };
     Map respLogin = await cliente.login(credentials: data);
-    if (respLogin["token"] != null || respLogin["token"] != ""){      //Si está ok, guardamos el token para hacer el login permanente
+    if (respLogin["access_token"] != null || respLogin["access_token"] != ""){      //Si está ok, guardamos el token para hacer el login permanente
       sharedPreferences = await SharedPreferences.getInstance();
-      sharedPreferences.setString("token", respLogin["token"]);
+      print("acá el token recibido");
+      print(respLogin["access_token"]);
+      sharedPreferences.setString("token", respLogin["access_token"]);
       Navigator.popAndPushNamed(context, "/Anuncios"); // y enviamos a /Anuncios
     }
     /*

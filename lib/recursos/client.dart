@@ -100,7 +100,8 @@ class ClientApi{
   Future<Map> login({Map credentials}) async {    //Credentials debiera ser un mapa con username & password
     String url = "http://algocerca.cl:8080/login/";
     http.Response resp = await http.post(url, body: credentials);
-    Map bodyLogin = jsonDecode(resp.body);     //Devuelve el map de la respuesta
+    Map bodyLogin = jsonDecode(resp.body);
+    print("esto devuelve el gateway: $bodyLogin");//Devuelve el map de la respuesta
     return bodyLogin;
   }
 
@@ -192,11 +193,18 @@ class ClientApi{
     return resp.body;
   }
 
+  void _checkToken() async{
+    
+    //Revisamos si el token es valido
+    http.Response resp = await http.get("wp-json/wp/v2/users/me");
+
+  }
 
   //Este es el centro de los get a la API. Lo hace a través de oauth1 encriptado en base64encode
   Future getResp({String endPoint, String response}) async {
     sharedPreferences = await SharedPreferences.getInstance();
     String token = await sharedPreferences.getString("token");
+
     String bearerToken = 'Bearer ' + token;
 
     http.Response resp = await http.get(
