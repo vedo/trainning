@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:trainning/recursos/ScreenArgument.dart';
 import 'package:trainning/recursos/client.dart';
-import 'package:trainning/recursos/constant.dart';
+
+/* PENDIENTE: ORDENAR ESTE CÓDIGO */
 
 class Tarjeta1 extends StatelessWidget {
   final String nombreProducto;
@@ -65,13 +66,13 @@ class Tarjeta1 extends StatelessWidget {
             ),
           ),
 
-          Positioned( // Botón detalle
+          Positioned( // Botón detalle producto
             left: 160,
             bottom: 10,
             child: FlatButton(
               child: Text("Ver producto"),
               onPressed: () {
-                Navigator.popAndPushNamed(
+                Navigator.pushNamed(
                   context, '/DetalleProducto',
                   arguments: ScreenArguments(
                     id: this.idProducto, 
@@ -86,7 +87,6 @@ class Tarjeta1 extends StatelessWidget {
       ),
     );
   } // TarjetaProducto Build
-
 } // TarjetaProducto
 
 
@@ -236,33 +236,121 @@ class Tarjeta3 extends StatelessWidget {
   }
 }
 
-
-class Titulo1 extends StatelessWidget {
+class TarjetaPost extends StatelessWidget {
   final String titulo;
-  const Titulo1({
+  final String id;
+  final String contenido;
+  const TarjetaPost({
     this.titulo,
+    this.id,
+    this.contenido,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        Container(
-          height: 1,
-          width: 90,
-          color: gradientBlue,
-        ),
-        Text(
-          this.titulo,
-          style: TextStyle( fontSize: 20, color: gradientBlue, fontWeight: FontWeight.bold ),
-        ),
-        Container(
-          height: 1,
-          width: 90,
-          color: gradientBlue,
-        ),
-      ],
+    return Container( // Tarjeta producto
+      margin: EdgeInsets.only(bottom: 10),
+      height: 150,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(34),
+        color: Colors.blue[50]
+      ),
+      child: Stack(
+        children: <Widget>[
+
+          Positioned( // Bloque de texto
+            left: 20,
+            top: 15,
+            child: Container(
+              height: 160,
+              width: MediaQuery.of(context).size.width - 40,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    this.titulo,
+                    style: Theme.of(context).textTheme.headline6,
+                  ),
+                  Text(this.contenido, overflow: TextOverflow.visible,),
+                ],
+              ),
+            ),
+          ),
+
+          Positioned( // Botón detalle
+            right: 20,
+            bottom: 5,
+            child: FlatButton(
+              child: Text("Leer más"),
+              onPressed: () {
+                Navigator.popAndPushNamed(
+                  context, '/DetallePost',
+                  arguments: ScreenArguments(
+                    id: this.id, 
+                    apiClient: cliente
+                  ),
+                );
+              },
+            ),
+          ),
+
+          Positioned( // Botón detalle
+            left: 20,
+            bottom: 20,
+            child: FutureBuilder(
+              future: cliente.getUserName(this.id), // Client get posts ? se puede construir esta parte de la app con los post del blog ?
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.none:
+                  case ConnectionState.waiting:
+                    return Text("");
+                  default:
+                    return Text(snapshot.data.toString()); 
+                } // FutureBuilder builder
+              },
+            ),
+          )
+
+        ],
+      ),
     );
-  }
-}
+  } // TarjetaProducto Build
+} // TarjetaProducto
+
+/* Modelo gráfico de una tienda, se usa en pestaña '/Mercado' */
+class Tienda extends StatelessWidget {
+  final String nombreTienda;
+  final Widget listaDeProductos;
+  const Tienda({
+    Key key,
+    this.nombreTienda,
+    this.listaDeProductos,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.only(bottom: 20, left: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            child: Text(
+              this.nombreTienda,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold
+              ),
+            )
+          ),
+          SizedBox(height: 5,),
+          
+          Container(
+            height: 160,
+            child: this.listaDeProductos,
+          ),
+        ],
+      ),
+    );
+  } // Tienda Build
+} //

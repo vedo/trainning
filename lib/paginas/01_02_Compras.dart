@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trainning/recursos/componentes.dart';
 import 'package:trainning/recursos/constant.dart';
 import 'package:trainning/recursos/tarjetas.dart';
 
@@ -15,7 +16,7 @@ class Compras extends StatelessWidget {
       child: Column(
         children: <Widget>[
           SizedBox(height: topPadding,),
-          Titulo1(titulo: "Compras",),
+          TituloConLineas(titulo: "Compras",),
           SizedBox(height: 20,),
           
           SizedBox(height: 10,),

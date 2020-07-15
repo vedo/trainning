@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:trainning/recursos/constant.dart';
 
+/* Bottom bar de la aplicación */
+/* PENDIENTE: Que el item seleccionado se mueste de otro color */
+/* PENDIENTE: Que se quede abajo y que no interrumpa el scroll: solución posible, que sea realmente un bottom bar */
 class CustomBottomBar extends StatelessWidget {
   final List<Icon> iconos = [Icon(Icons.home), Icon(Icons.map), Icon(Icons.shopping_basket), Icon(Icons.people)];
   final List<String> textos = ["Mi Tienda","Mapa","Mercado","Mi Barrio",];
-  final List<String> enlaces = ["/Anuncios","/Mapa","/ListaTiendas","/ListaTiendas",];
+  final List<String> enlaces = ["/Anuncios","/Mapa","/Mercado","/MiBarrio",];
   
   @override
   Widget build(BuildContext context) {
@@ -19,17 +22,15 @@ class CustomBottomBar extends StatelessWidget {
 
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: textos.map((nombreBoton) {
+          children: this.textos.map( (nombreBoton) {
             int index = textos.indexOf(nombreBoton);
             return Column(
               children: <Widget>[
                 IconButton(
-                  icon: iconos[index],
-                  onPressed: () {
-                    Navigator.popAndPushNamed(context, enlaces[index]);
-                  },
+                  icon: this.iconos[index],
+                  onPressed: () {  Navigator.popAndPushNamed(context, this.enlaces[index]);  },
                 ),
-                Text(nombreBoton)
+                Text( nombreBoton )
               ],
             );
           }).toList()
@@ -37,8 +38,11 @@ class CustomBottomBar extends StatelessWidget {
       ),
     );
   }
-}// Custom bottom bar
+} // Bottom bar
 
+/* Menú de que se muestra en la pantalla mi tienda */
+/* Muestra Anuncios, Pedidos y Compras */
+/* Se localiza debajo del App bar */
 class CustomMenu extends StatelessWidget {
   static TextStyle selectedStyle = TextStyle(color: Colors.white, fontWeight: FontWeight.bold,);
   static TextStyle unselectedStyle = TextStyle(color: Colors.black);
@@ -61,21 +65,17 @@ class CustomMenu extends StatelessWidget {
             int index = titulos.indexOf(titulo);
             TextStyle estilo = (index == this.menuIndex) ? selectedStyle : unselectedStyle;
             return FlatButton( // Botón anuncios
-              onPressed: (){
-                Navigator.popAndPushNamed(context, '/' + titulo,);
-              },
-              child: Text(
-                titulo,
-                style: estilo,
-              ),
+              onPressed: (){  Navigator.popAndPushNamed(context, '/' + titulo,);  },
+              child: Text(  titulo,  style: estilo,  ),
             ); 
           }).toList()
         ),
       ),
     );
   }
-}
+} // Custom menu
 
+/* App bar de la aplicación */
 class CustomAppBar extends StatelessWidget {
   final List<IconData> iconosAppbar = [Icons.search, Icons.notifications];
   final List<VoidCallback> accionesIconos = [(){},(){},];
@@ -90,15 +90,12 @@ class CustomAppBar extends StatelessWidget {
       child: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0.0,
-          title: Text(this.titulo),
-          actions: iconosAppbar.map((icono) {
+          title: Text( this.titulo ),
+          actions: this.iconosAppbar.map( (icono) {
             int index = iconosAppbar.indexOf(icono);
-            return IconButton(
-              icon: Icon(icono),
-              onPressed: accionesIconos[index],
-            );
+            return IconButton( icon: Icon(icono), onPressed: this.accionesIconos[index], );
           }).toList()        
         ),
     );
   }
-}
+} // Custom appbar

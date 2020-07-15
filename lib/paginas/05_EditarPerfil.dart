@@ -4,83 +4,75 @@ import 'package:trainning/recursos/client.dart';
 
 
 class ProfileMenu extends StatelessWidget {
-
-
   @override
-
-
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Center( child:
-        FutureBuilder(
-        future: cliente.getMyProfile(),
+        child: Center( 
+          child: FutureBuilder(
+            future: cliente.getMyProfile(),
             initialData: cliente.getMyProfile(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data!=null) {
+                  Profile data = snapshot.data;
+                  return ListView(
+                    //crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "Edita tu cuenta",
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      
+                      SizedBox(height: 10,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: <Widget>[
+                          RoundedEditButton(icono: Icon(Icons.person),),
+                          RoundedEditButton(icono: Icon(Icons.home), ),
+                        ],
+                      ),
 
-      if (snapshot.hasData) {
+                      SizedBox(height: 10,),
+                      TitledTextField(
+                        titulo: "Nombre",
+                        valor: data.niceName,
+                      ),
 
-        if (snapshot.data!=null) {
+                      SizedBox(height: 10,),
+                      TitledTextField(
+                        titulo: "Apellidos",
+                        valor: data.lastName,
+                      ),
 
-    Profile data = snapshot.data;
+                      SizedBox(height: 10,),
+                      TitledTextField(
+                        titulo: "Número de teléfono",
+                        valor: data.address.phone,
+                      ),
 
-    return ListView(
-    //crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-    Text(
-    "Edita tu cuenta",
-    style: TextStyle(
-    fontSize: 25,
-    fontWeight: FontWeight.bold,
-    color: Colors.grey,
-    ),
-    ),
-    SizedBox(height: 10,),
-    Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: <Widget>[
-    RoundedEditButton(
-    icono: Icon(Icons.person),
-    ),
-    RoundedEditButton(
-    icono: Icon(Icons.home),
-    ),
-    ],
-    ),
-    SizedBox(height: 10,),
-    TitledTextField(
-    titulo: "Nombre",
-    valor: data.niceName,
-    ),
-    SizedBox(height: 10,),
-    TitledTextField(
-    titulo: "Apellidos",
-    valor: data.lastName,
-    ),
-    SizedBox(height: 10,),
-    TitledTextField(
-    titulo: "Número de teléfono",
-    valor: data.address.phone,
-    ),
-    SizedBox(height: 10,),
-    TitledTextField(
-    titulo: "Correo Electrónico",
-    valor: data.email,
-    ),
-    SizedBox(height: 10,),
-    TitledTextField(
-    titulo: "Contraseña",
-    valor: "********",
-    ),
-    ],
-    );
-    }
-
-    else {
-      return CircularProgressIndicator();
-    }}}),
-
+                      SizedBox(height: 10,),
+                      TitledTextField(
+                        titulo: "Correo Electrónico",
+                        valor: data.email,
+                      ),
+                      
+                      SizedBox(height: 10,),
+                      TitledTextField(
+                        titulo: "Contraseña",
+                        valor: "********",
+                      ),
+                    ],
+                  );
+                }else { return CircularProgressIndicator(); }
+              }else{ return Container(); }
+            }
+          ),
         ),
       ),
     );

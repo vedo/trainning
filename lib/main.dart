@@ -2,20 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:trainning/recursos/stackMenu.dart';
 import 'package:trainning/paginas/imagePick.dart';
 
-import 'package:trainning/paginas/00_PrimeraPantalla.dart';
-import 'package:trainning/paginas/01_LogIn.dart';
-import 'package:trainning/paginas/02_CreateUser.dart';
-import 'package:trainning/paginas/03_MisAnuncios.dart';
-import 'package:trainning/paginas/04_Mercado.dart';
-import 'package:trainning/paginas/05_VentasEnProceso.dart';
-import 'package:trainning/paginas/06_HistorialVentas.dart';
-import 'package:trainning/paginas/07_CrearAnuncio.dart';
-import 'package:trainning/paginas/08_Compras.dart';
-import 'package:trainning/paginas/09_DetalleProducto.dart';
-import 'package:trainning/paginas/11_EditarPerfil.dart';
-import 'package:trainning/paginas/12_Pedidos.dart';
-import 'package:trainning/paginas/13_EditarAnuncio.dart';
-import 'package:trainning/paginas/14_Map.dart';
+import 'package:trainning/paginas/00_00_PrimeraPantalla.dart';
+import 'package:trainning/paginas/00_01_LogIn.dart';
+import 'package:trainning/paginas/00_02_CreateUser.dart';
+import 'package:trainning/paginas/01_00_00_MisAnuncios.dart';
+import 'package:trainning/paginas/01_00_01_CrearAnuncio.dart';
+import 'package:trainning/paginas/01_00_02_EditarAnuncio.dart';
+import 'package:trainning/paginas/01_01_00_Pedidos.dart';
+import 'package:trainning/paginas/01_01_01_HistorialVentas.dart';
+import 'package:trainning/paginas/01_01_02_VentasEnProceso.dart';
+import 'package:trainning/paginas/01_02_Compras.dart';
+import 'package:trainning/paginas/02_Map.dart';
+import 'package:trainning/paginas/03_00_Mercado.dart';
+import 'package:trainning/paginas/03_01_DetalleProducto.dart';
+import 'package:trainning/paginas/04_00_MiBarrio.dart';
+import 'package:trainning/paginas/04_01_DetallePost.dart';
+import 'package:trainning/paginas/04_02_CrearPost.dart';
+import 'package:trainning/paginas/05_EditarPerfil.dart';
 
 
 void main(){ 
@@ -24,21 +27,35 @@ void main(){
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
+        
+        /* 0.0 Sección INTRO */
         '/':                (context) => PrimeraPantalla(),
         '/LogIn':           (context) => LogInMenu(),
         '/CreateUser':      (context) => CreateUser(),
-        '/Anuncios':        (context) => StandardMenu( contenido: MisAnuncios(),     appBarTitle: 'Mis Anuncios',        menuType: "full", menuIndex: 0,),
+        /* 1.0 Sección MI TIENDA */
+        '/Anuncios':        (context) => StandardMenu( contenido: MisAnuncios(),     appBarTitle: 'Mis anuncios',        menuType: "full", menuIndex: 0,),
+        '/CrearAnuncio':    (context) => StandardMenu( contenido: CrearAnuncio(),    appBarTitle: 'Crear anuncio',       menuType: "topBottom",),
+        '/EditarAnuncio':   (context) => StandardMenu( contenido: EditarAnuncio(),   appBarTitle: 'Editar anuncio',      menuType: "topBottom",),
+        
         '/Pedidos':         (context) => StandardMenu( contenido: Pedidos(),         appBarTitle: 'Pedidos',             menuType: "full", menuIndex: 1,),
-        '/VentasEnProceso': (context) => StandardMenu( contenido: VentasEnProceso(), appBarTitle: 'Ventas en Proceso',   menuType: "full", menuIndex: 1,),
-        '/ListaTiendas':    (context) => StandardMenu( contenido: StoreList(),       appBarTitle: 'Lista de Tiendas',    menuType: "topBottom",),
-        '/Mapa':            (context) => StandardMenu( contenido: PantallaMaps(),    appBarTitle: 'Mapa',                menuType: "topBottom",),
-        '/Perfil':          (context) => StandardMenu( contenido: ProfileMenu(),     appBarTitle: 'Mi Perfil',           menuType: "topBottom",),
-        '/CrearAnuncio':    (context) => StandardMenu( contenido: CrearAnuncio(),    appBarTitle: 'CrearAnuncio',        menuType: "topBottom",),
-        '/DetalleProducto': (context) => StandardMenu( contenido: DetalleProducto(), appBarTitle: 'Detalle Producto',    menuType: "topBottom",),
-        '/imagePick':       (context) => StandardMenu( contenido: ImagePick(),       appBarTitle: 'Selecciona la imagen',menuType: "topBottom",),
-        '/HistorialVentas': (context) => StandardMenu( contenido: HistorialVentas(), appBarTitle: 'Historial de Ventas', menuType: "full", menuIndex: 1,),
+        '/VentasEnProceso': (context) => StandardMenu( contenido: VentasEnProceso(), appBarTitle: 'Ventas en proceso',   menuType: "full", menuIndex: 1,),
+        '/HistorialVentas': (context) => StandardMenu( contenido: HistorialVentas(), appBarTitle: 'Historial de ventas', menuType: "full", menuIndex: 1,),
+        
         '/Compras':         (context) => StandardMenu( contenido: Compras(),         appBarTitle: 'Compras',             menuType: "full", menuIndex: 2,),
-        '/EditarAnuncio':   (context) => StandardMenu( contenido: EditarAnuncio(),   appBarTitle: 'Editar Anuncio',      menuType: "topBottom",),
+        
+        /* Resto de secciones en el bottombar */
+        '/Mapa':            (context) => StandardMenu( contenido: PantallaMaps(),    appBarTitle: 'Mapa',                menuType: "topBottom",),
+        
+        '/Mercado':         (context) => StandardMenu( contenido: StoreList(),       appBarTitle: 'Lista de tiendas',    menuType: "topBottom",),
+        '/DetalleProducto': (context) => StandardMenu( contenido: DetalleProducto(), appBarTitle: 'Detalle producto',    menuType: "topBottom",),
+
+        '/MiBarrio':        (context) => StandardMenu( contenido: MiBarrio(),        appBarTitle: 'Mi Barrio',           menuType: "topBottom",),
+        '/DetallePost':     (context) => StandardMenu( contenido: DetallePost(),     appBarTitle: 'Detalle publicación', menuType: "topBottom",),
+        '/CrearPost':       (context) => StandardMenu( contenido: CrearPost(),       appBarTitle: 'Crear publicación',   menuType: "topBottom",),
+
+        /* Otros */
+        '/Perfil':          (context) => StandardMenu( contenido: ProfileMenu(),     appBarTitle: 'Mi Perfil',           menuType: "topBottom",),
+        '/imagePick':       (context) => StandardMenu( contenido: ImagePick(),       appBarTitle: 'Selecciona la imagen',menuType: "topBottom",),
       },
     )
   );

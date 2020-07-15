@@ -18,13 +18,8 @@ class HistorialVentas extends StatelessWidget {
                   height: 40,
                   child: RaisedButton(
                     color: Color(0xFF5586A2),
-                    onPressed: () {
-                      Navigator.popAndPushNamed(context, '/MisAnuncios');
-                    },
-                    child: Text(
-                      'Mis Anuncios', 
-                      style: TextStyle(fontSize: 15, color: Colors.white)
-                    ),
+                    onPressed: () { Navigator.popAndPushNamed(context, '/MisAnuncios'); },
+                    child: Text( 'Mis Anuncios',  style: TextStyle(fontSize: 15, color: Colors.white) ),
                   ),
                 ),
 
@@ -33,23 +28,15 @@ class HistorialVentas extends StatelessWidget {
                   height: 40,
                   child: RaisedButton(
                     color: Color(0xFF5586A2),
-                    onPressed: () {
-                      Navigator.popAndPushNamed(context, '/MiTienda');
-                    },
-                    child: Text(
-                      'Ventas en Proceso', 
-                      style: TextStyle(fontSize: 15, color: Colors.white)
-                    ),
+                    onPressed: () { Navigator.popAndPushNamed(context, '/MiTienda'); },
+                    child: Text( 'Ventas en Proceso',  style: TextStyle(fontSize: 15, color: Colors.white) ),
                   ),
                 ),
               ],
             ),
             
             SizedBox(height: 10,),
-            Text(
-              "Historial de Ventas",
-              style: TextStyle( fontSize: 20, color: Color(0xFFDAC8CF) ),
-            ),
+            Text( "Historial de Ventas", style: TextStyle( fontSize: 20, color: Color(0xFFDAC8CF) ), ),
 
             Expanded(
               child: Container(

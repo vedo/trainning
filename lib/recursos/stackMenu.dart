@@ -116,8 +116,8 @@ class MiScaffold extends StatefulWidget {
 }
 
 class _MiScaffoldState extends State<MiScaffold> {
-  static final List<String> drawerMenu = ["Mi Perfil", "Mis Anuncios", "Pedidos", "Mis Compras", "Mapa de la ciudad", "Mercado", "Mi Barrio"];
-  static final List<IconData> drawerIcons = [Icons.face, Icons.shopping_cart, Icons.laptop, Icons.laptop, Icons.laptop, Icons.laptop, Icons.laptop];
+  //static final List<String> drawerMenu = ["Mi Perfil", "Mis Anuncios", "Pedidos", "Mis Compras", "Mapa de la ciudad", "Mercado", "Mi Barrio"];
+  //static final List<IconData> drawerIcons = [Icons.face, Icons.shopping_cart, Icons.laptop, Icons.laptop, Icons.laptop, Icons.laptop, Icons.laptop];
   
   destroySession() async{
     sharedPreferences = await SharedPreferences.getInstance();
@@ -137,7 +137,7 @@ class _MiScaffoldState extends State<MiScaffold> {
                 color: Colors.blue,
               ),
               child: Text(
-                'Drawer Header',
+                'Mi Perfil',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -152,31 +152,37 @@ class _MiScaffoldState extends State<MiScaffold> {
             ListTile(
               leading: Icon(Icons.record_voice_over),
               title: Text('Mis Anuncios'),
+              onTap: (){ Navigator.popAndPushNamed(context, "/Anuncios");},
             ),
             ListTile(
               leading: Icon(Icons.ring_volume),
               title: Text('Pedidos'),
+              onTap: (){ Navigator.popAndPushNamed(context, "/Pedidos");},
             ),
             ListTile(
               leading: Icon(Icons.shopping_cart),
               title: Text('Mis Compras'),
+              onTap: (){ Navigator.popAndPushNamed(context, "/Compras");},
             ),
             ListTile(
               leading: Icon(Icons.location_on),
               title: Text('Mapa de la ciudad'),
+              onTap: (){ Navigator.popAndPushNamed(context, "/Mapa");},
             ),
             ListTile(
               leading: Icon(Icons.shopping_basket),
               title: Text('Mercado'),
+              onTap: (){ Navigator.popAndPushNamed(context, "/Mercado");},
             ),
             ListTile(
               leading: Icon(Icons.supervised_user_circle),
               title: Text('Mi Barrio'),
+              onTap: (){ Navigator.popAndPushNamed(context, "/MiBarrio");},
             ),
-            ListTile(
+            /* ListTile(
               leading: Icon(Icons.settings),
               title: Text('Ajustes'),
-            ),
+            ), */
             ListTile(
               leading: Icon(Icons.power_settings_new),
               title: Text('Cerrar Sesión'),

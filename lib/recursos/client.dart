@@ -40,12 +40,11 @@ class ClientApi{
     putImageProduct(idProduct: jsonProductBody["id"].toString(), idImage: jsonImageBody["id"].toString());
   }
 
-
   Future postProduct({String nameProduct, String type="simple", String regularPrice, String description, int stock, int idImage}) async{
     Future<String> postResp(String endPoint) async{
       sharedPreferences = await SharedPreferences.getInstance();
-      String token = await sharedPreferences.getString("token");
-      List imageList =  [{"id": idImage, "position":1}];
+      String token = sharedPreferences.getString("token");
+      //List imageList =  [{"id": idImage, "position":1}];
       String bodyMap = jsonEncode({
         "name": "$nameProduct",
         "type": "$type",
@@ -55,7 +54,7 @@ class ClientApi{
         "stock_quantity": 1,
         "image_id": idImage,
       });
-      final mapString = bodyMap.toString();
+      //final mapString = bodyMap.toString();
       String bearerToken = 'Bearer ' + token;
       http.Response resp = await http.post('http://algocerca.cl:8080/$endPoint',
           headers: <String, String>{'authorization' : bearerToken,
@@ -72,7 +71,7 @@ class ClientApi{
 //Metodo para subir la imagen de los productos
   Future upload({File imageFile}) async {
     sharedPreferences = await SharedPreferences.getInstance();
-    String token = await sharedPreferences.getString("token");
+    String token = sharedPreferences.getString("token");
     var stream = new http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
     var length = await imageFile.length();
     var uri = Uri.parse("http://algocerca.cl:8080/upload-image");
@@ -100,17 +99,9 @@ class ClientApi{
   Future<Map> login({Map credentials}) async {    //Credentials debiera ser un mapa con username & password
     String url = "http://algocerca.cl:8080/login/";
     http.Response resp = await http.post(url, body: credentials);
-<<<<<<< HEAD
-    print( resp.body.toString() );
-    Map bodyLogin = jsonDecode(resp.body);     //Devuelve el map de la respuesta
-=======
-    Map bodyLogin = jsonDecode(resp.body);
-    print("esto devuelve el gateway: $bodyLogin");//Devuelve el map de la respuesta
->>>>>>> 64e1718a45d7cf9be42af6df430b763c4bd47cc1
-    return bodyLogin;
+    return resp.statusCode == 200 ? jsonDecode(resp.body) :  {"message": "error"};
   }
-
-
+  
   /*
   testValidation: metodo 1ra etapa de la creacion de usuario,
   Está encriptado a través de la llave pública (solo cierre)
@@ -149,7 +140,7 @@ class ClientApi{
   Future<bool> savePassword({@required String password}) async {
     sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.setString("password", password);
-    String passwordReaded = await sharedPreferences.getString("password");
+    String passwordReaded = sharedPreferences.getString("password");
     if (passwordReaded != null) {
       return true;
     }
@@ -161,8 +152,8 @@ class ClientApi{
 
   Future<bool> genToken() async {
     sharedPreferences = await SharedPreferences.getInstance();
-    String username = await sharedPreferences.getString("email");
-    String password = await sharedPreferences.getString("password");
+    String username = sharedPreferences.getString("email");
+    String password = sharedPreferences.getString("password");
     Map data = {
       'username': username,
       'password': password
@@ -171,7 +162,7 @@ class ClientApi{
       var response = await http.post("https://algocerca.cl/wp-json/jwt-auth/v1/token", body: data);
       var jsonResponse = json.decode(response.body);
       if ( response.statusCode == 200 ){
-        sharedPreferences.setString("token",             jsonResponse["token"]);
+        sharedPreferences.setString("token", jsonResponse["token"]);
         return true;
         }//end: statuscode == 200
       else{
@@ -197,20 +188,17 @@ class ClientApi{
     return resp.body;
   }
 
-  void _checkToken() async{
-    
+  /* void _checkToken() async{
     //Revisamos si el token es valido
     http.Response resp = await http.get("wp-json/wp/v2/users/me");
-
-  }
+  } */
 
   //Este es el centro de los get a la API. Lo hace a través de oauth1 encriptado en base64encode
   Future getResp({String endPoint, String response}) async {
     sharedPreferences = await SharedPreferences.getInstance();
-    String token = await sharedPreferences.getString("token");
+    String token = sharedPreferences.getString("token");
 
     String bearerToken = 'Bearer ' + token;
-
     http.Response resp = await http.get(
       'http://algocerca.cl:8080/$endPoint',
       headers: <String, String>{'authorization': bearerToken},
@@ -233,9 +221,8 @@ class ClientApi{
     return resp;
   }
 
-
-    //String response = await putImageProduct(idProduct: idProduct,idImage: idImage);
-   // return response;
+  //String response = await putImageProduct(idProduct: idProduct,idImage: idImage);
+  // return response;
   //devuelve un listado de productos por la id del vendedor; en objeto
   Future<List> getProductos(idVendor) async{
     final productos = productosFromJson(await getResp(endPoint: "getproducts/$idVendor"));
@@ -244,15 +231,17 @@ class ClientApi{
 
 
   Future<List> getMyProducts() async{
-    final myproducts = await myproductsFromJson(await getResp(endPoint: "myproducts/", ));
+    final myproducts = myproductsFromJson(await getResp(endPoint: "myproducts/", ));
     return myproducts;
   }
 
-
+  /* EDITADO RAW VOLVERATRAS*/
   //llama el detalle del producto (id), desde la API, y devuelve los datos en un objeto
-  Future getDetailProduct<map>(id) async{
-    final detailProduct = detailProductFromJson(await getResp(endPoint: "wc/v3/products/$id"));
-    return detailProduct;
+  Future getDetailProduct<map>(productId) async{
+    /* final detailProduct = detailProductFromJson(await getResp(endPoint: "wc/v3/products/$id"));
+    return detailProduct; */
+    http.Response resp = await getRawResponse(endPoint: "wc/v3/products/$productId");
+    return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
   }
 
 
@@ -264,9 +253,7 @@ class ClientApi{
   }
 
 
-  /*
-  ACA VAN LOS PUT!
-   */
+  /* ACA VAN LOS PUT! */
   Future<String> putResp(String endPoint) async {
     String bearerToken = 'Bearer ' + 'Aq7ltD1aMdZb';
     http.Response resp = await http.put('https://pancolor.cl/wp-json/$endPoint',
@@ -300,6 +287,73 @@ class ClientApi{
     final product = await putResp("wc/v2/products");
     return product;
 
+  }
+
+
+  /* POSTS QUE SE USAN EN MI BARRIO */
+  /* Funciones: 
+      [X] Ver lista de posts
+      [X] Ver mis posts
+      [ ] Ver el detalle de un post ( contenido y lista de comentarios )
+      [ ] Comentar un post
+      [X] Crear un post
+      [ ] Editar un post
+  */
+  Future getRawResponse({String endPoint}) async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    String token = sharedPreferences.getString("token");
+    String bearerToken = token!= null ? 'Bearer ' + token : 'Bearer ';
+    return await http.get(
+      'https://algocerca.cl/wp-json/$endPoint',
+      headers: {'authorization': bearerToken},
+    );
+  }
+
+  Future postRawResponse({String endPoint, String bodyMap}) async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    String token = sharedPreferences.getString("token");
+    //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYWxnb2NlcmNhLmNsIiwiaWF0IjoxNTk0NzYzMzU1LCJuYmYiOjE1OTQ3NjMzNTUsImV4cCI6MTU5NTM2ODE1NSwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiNCJ9fX0.JsdLjGi_VOJUYQ_qE4ums-EMDc2av5gzV1Nm8q5smXM";
+    String bearerToken = token!= null ? 'Bearer ' + token : 'Bearer ';
+    return await http.post(
+      'https://algocerca.cl/wp-json/$endPoint',
+      headers: {
+        'authorization' : bearerToken,
+        'Content-Type'  : 'application/json'
+      },
+      body: bodyMap
+    );
+  }
+
+  Future<String> getMyId() async{
+    http.Response resp = await getRawResponse(endPoint: "wp/v2/users/me?_wpnonce=9467a0bf9c");
+    return resp.statusCode == 200 ? jsonDecode(resp.body)["id"].toString() : "error";
+  }
+
+  Future getPosts() async{
+    http.Response resp = await getRawResponse(endPoint: "wp/v2/posts");
+    return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
+  }
+
+  Future getMyPosts() async{
+    String myID = await getMyId();
+    http.Response resp = await getRawResponse(endPoint: "wp/v2/posts/?author=$myID");
+    return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
+  }
+
+  Future<String> getUserName(userId) async{
+    /* Este debería salir de un getUserById(userId) */
+    http.Response resp = await getRawResponse(endPoint: "wp/v2/users/$userId");
+    return resp.statusCode == 200 ? jsonDecode(resp.body)["name"] : "";
+  }
+
+  Future createPost({String postTitle, String contenido}) async{
+    String bodyMap = jsonEncode({
+      "title": postTitle,
+      "status": "publish",
+      "content": contenido,
+    });
+    http.Response resp = await postRawResponse(endPoint: "wp/v2/posts", bodyMap: bodyMap);
+    return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
   }
 
 }

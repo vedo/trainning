@@ -19,9 +19,7 @@ class EditarAnuncio extends StatelessWidget {
               size: 50.0,
             );
           default:
-            if (snapshot.hasError){
-              return Text('Error: ${snapshot.error}');
-            }
+            if (snapshot.hasError){ return Text('Error: ${snapshot.error}'); }
             else{
               var jsonResponse = json.decode(snapshot.data.body);
               if (snapshot.data.statusCode != 200 ){

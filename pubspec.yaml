@@ -20,6 +20,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  url_launcher: ^5.5.0
   carousel_slider: ^2.2.1       # Carousel usado en la página de pedidos
   intl: ^0.16.1                 # ¿?
   flutter_spinkit: ^4.1.2+1     # Animaciones de pantallas cargando
