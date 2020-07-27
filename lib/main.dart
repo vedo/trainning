@@ -18,7 +18,8 @@ import 'package:trainning/paginas/03_01_DetalleProducto.dart';
 import 'package:trainning/paginas/04_00_MiBarrio.dart';
 import 'package:trainning/paginas/04_01_DetallePost.dart';
 import 'package:trainning/paginas/04_02_CrearPost.dart';
-import 'package:trainning/paginas/05_EditarPerfil.dart';
+import 'package:trainning/paginas/05_00_VerPerfil.dart';
+import 'package:trainning/paginas/05_01_EditarPerfil.dart';
 
 
 void main(){ 
@@ -27,7 +28,6 @@ void main(){
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        
         /* 0.0 Sección INTRO */
         '/':                (context) => PrimeraPantalla(),
         '/LogIn':           (context) => LogInMenu(),
@@ -47,7 +47,8 @@ void main(){
         '/Mapa':            (context) => StandardMenu( contenido: PantallaMaps(),    appBarTitle: 'Mapa',                menuType: "topBottom",),
         
         '/Mercado':         (context) => StandardMenu( contenido: StoreList(),       appBarTitle: 'Lista de tiendas',    menuType: "topBottom",),
-        '/DetalleProducto': (context) => StandardMenu( contenido: DetalleProducto(), appBarTitle: 'Detalle producto',    menuType: "topBottom",),
+        '/DetalleProducto': (context) => DetalleProducto(),
+        //'/DetalleProducto': (context) => StandardMenu( contenido: DetalleProducto(), appBarTitle: 'Detalle producto',    menuType: "topBottom",),
 
         '/MiBarrio':        (context) => StandardMenu( contenido: MiBarrio(),        appBarTitle: 'Mi Barrio',           menuType: "topBottom",),
         '/DetallePost':     (context) => StandardMenu( contenido: DetallePost(),     appBarTitle: 'Detalle publicación', menuType: "topBottom",),
@@ -55,6 +56,7 @@ void main(){
 
         /* Otros */
         '/Perfil':          (context) => StandardMenu( contenido: ProfileMenu(),     appBarTitle: 'Mi Perfil',           menuType: "topBottom",),
+        '/EditarPerfil':    (context) => StandardMenu( contenido: EditarPerfil(),    appBarTitle: 'Editar Perfil',       menuType: "topBottom",),
         '/imagePick':       (context) => StandardMenu( contenido: ImagePick(),       appBarTitle: 'Selecciona la imagen',menuType: "topBottom",),
       },
     )

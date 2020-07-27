@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:html/parser.dart';
+//import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:trainning/recursos/client.dart';
 import 'package:trainning/recursos/tarjetas.dart';
 import 'package:trainning/recursos/componentes.dart';
@@ -82,9 +83,9 @@ Widget construirListaDePosts(BuildContext context, dynamic snapshot) {
     itemBuilder: (BuildContext context, int index) {
       String idPost = data[index]["id"].toString();
       return TarjetaPost(
-        titulo: data[index]["title"]["rendered"].toString(),
+        titulo: parse(data[index]["title"]["rendered"]).body.text,
         id: idPost,
-        contenido: data[index]["content"]["rendered"].toString(),
+        contenido: parse(data[index]["content"]["rendered"]).body.text,
       );
     },
   );

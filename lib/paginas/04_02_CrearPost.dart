@@ -78,6 +78,9 @@ class _CrearPostState extends State<CrearPost> {
                   }
                 },
               ),
+
+              SizedBox(height: bottomPadding,),
+
             ],
           ),
         ),

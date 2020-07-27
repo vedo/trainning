@@ -20,6 +20,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  html: ^0.14.0+3
+  geolocator: ^5.3.2+2
   url_launcher: ^5.5.0
   carousel_slider: ^2.2.1       # Carousel usado en la página de pedidos
   intl: ^0.16.1                 # ¿?

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-const topPadding = 150.0;
+const topPadding = 140.0;
+const bottomPadding = 300.0;
 
 const bottomBarColor  = Color(0xC060879D);
 const buttonGreen     = Color(0xFF47B53A);
@@ -14,10 +15,15 @@ const kPrimaryColor   = Color(0xFFFB475F);
 const kSecondaryColor = Color(0xFFF5E1CB);
 const kBorderColor    = Color(0xFFDDDDDD);
 
-const gradientOrange  = Color(0xFFFFD600);
-const gradientYellow  = Color(0xFFC43C00);
-const gradientBlue    = Color(0xFF2962FF);
-const gradientPurple  = Color(0xFF7C4DFF);
+const gradientOrange  = Color(0xFFAB4919); 
+const gradientYellow  = Color(0xFFDFBE20); 
+const gradientBlue    = Color(0xFF7897E4); 
+const gradientPurple  = Color(0xFF8344E2); 
+
+//Color(0xFFFFD600);
+//Color(0xFFC43C00);
+//Color(0xFF2962FF);
+//Color(0xFF7C4DFF);
 
 const LinearGradient gradienteAzul = LinearGradient(
   colors: [gradientBlue, gradientPurple],

@@ -128,6 +128,7 @@ class _MiScaffoldState extends State<MiScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,

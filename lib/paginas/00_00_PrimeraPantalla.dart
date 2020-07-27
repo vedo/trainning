@@ -16,11 +16,6 @@ class _PrimeraPantallaState extends State<PrimeraPantalla> {
   
   String mensaje;
   SharedPreferences sharedPreferences;
-  
-  checkLogIn() async { // verdadero cuando hay un token
-    sharedPreferences = await SharedPreferences.getInstance();
-    return sharedPreferences.getString("token") != null;
-  }
 
   @override
   void initState() {
@@ -29,29 +24,6 @@ class _PrimeraPantallaState extends State<PrimeraPantalla> {
     checkPantalla();
   }
 
-  loggedMove() async{
-    if( await checkLogIn() ){
-      Navigator.popAndPushNamed(context, "/Anuncios");
-    }
-  }
-
-  checkPantalla() async{
-    sharedPreferences = await SharedPreferences.getInstance();
-    if(sharedPreferences.getString("primeraPantalla_check") == null ){
-      showPopup(
-        context: context,
-        titulo: "Bienvenido!",
-        contenido: [
-          Image(image: AssetImage('assets/img/activistas.png')),
-          Text("\nLa pandemia nos ha enseñado que necesitamos colaborar y cuidarnos como sociedad.\n"),
-          Text("AlgoCerca es una empresa sin fines de lucro cuyo objetivo es crear herramietas útiles para vecinas y vecinos en todo Chile.\n"),
-          Text("Si quieres saber más sobre como funcionamos puedes visitar nuestro portal algocerca.cl."),
-        ]
-      );
-      sharedPreferences.setString("primeraPantalla_check", "ok");
-    }
-  }
-  
   @override
   Widget build(BuildContext context) {
      return Scaffold(
@@ -86,6 +58,36 @@ class _PrimeraPantallaState extends State<PrimeraPantalla> {
       ),
     );  
   }
+
+  checkLogIn() async { // verdadero cuando hay un token
+    sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getString("token") != null;
+  }
+
+  loggedMove() async{
+    if( await checkLogIn() ){
+      Navigator.popAndPushNamed(context, "/Anuncios");
+    }
+  }
+
+  checkPantalla() async{
+    sharedPreferences = await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("primeraPantalla_check") == null ){
+      showPopup(
+        context: context,
+        titulo: "Bienvenido!",
+        contenido: [
+          Image(image: AssetImage('assets/img/activistas.png')),
+          Text("\nLa pandemia nos ha enseñado que necesitamos colaborar y cuidarnos como sociedad.\n"),
+          Text("AlgoCerca es una empresa sin fines de lucro cuyo objetivo es crear herramietas útiles para vecinas y vecinos en todo Chile.\n"),
+          Text("Si quieres saber más sobre como funcionamos puedes visitar nuestro portal algocerca.cl."),
+        ]
+      );
+      sharedPreferences.setString("primeraPantalla_check", "ok");
+    }
+  }
+  
+  
 
   Widget formularioLogin(BuildContext context){
   return Column(

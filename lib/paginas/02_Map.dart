@@ -1,84 +1,104 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:trainning/recursos/constant.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+//import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:trainning/recursos/client.dart';
-
+import 'package:trainning/recursos/componentes.dart';
 
 class PantallaMaps extends StatefulWidget {
-  final LatLng initialMapPosition = LatLng(-22.454104,-68.918158);
-  
   @override
   _PantallaMapsState createState() => _PantallaMapsState();
 }
 
 class _PantallaMapsState extends State<PantallaMaps> {
+  
   GoogleMapController mapController;
   Completer<GoogleMapController> _controller = Completer();
-  bool closeWindow = true;
+  CameraPosition posicionInicialCamara = CameraPosition(
+    zoom: 15,
+    target: LatLng(-22.454104, -68.918158),
+  );
   var markerList = Set<Marker>();
-  List<LatLng> posiciones = [ 
-    LatLng(-22.453636,-68.914739),
-    LatLng(-22.4545754,-68.9230375),
-    LatLng(-22.4545242,-68.9199767),
-    LatLng(-22.4517295,-68.9191101),
-    LatLng(-22.4564465,-68.9198948),
-    LatLng(-22.4553776,-68.9216041),   
-    LatLng(-22.4553776,-68.9216041),   
-    LatLng(-22.4553776,-68.9216041),   
-    LatLng(-22.4553776,-68.9216041),   
-  ];
-
+ 
+  bool closeWindow = true;  
   String nombreTienda = "";
   String idVendor = "";
   Widget listaProductos = Container();
 
-  void obtenerTiendas(){
-    final futureVendors = cliente.getVendors();
-    futureVendors.then( (resp){
-      int numeroDeClientes = resp.length;
-      setState((){
-        for( var i = 0 ; i < numeroDeClientes; i++ ) { 
-          String idTienda = resp[i].id.toString();
-          markerList.add(
-            Marker(
-              markerId: MarkerId(idTienda),
-              position: posiciones[i],
-              onTap: (){
-                setState(() {
-                  closeWindow = false;
-                  nombreTienda = resp[i].login.toString();
-                  idVendor = resp[i].id.toString();
-                  listaProductos = FutureBuilder(
-                    future: cliente.getProductos(idVendor),
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      switch (snapshot.connectionState) {
-                        case ConnectionState.none:
-                        case ConnectionState.waiting:
-                          return SpinKitThreeBounce(
-                            color: Colors.blue,
-                            size: 30.0,
-                          );
-                        default:
-                          if (snapshot.hasError)
-                            return Text('Error: ${snapshot.error}');
-                          else
-                            return construirListaDeProductos(context, snapshot);
-                      }
-                    },
-                  );
-                  /* Future futureProductos = cliente.getProductos(idVendor);
-                  futureProductos.then( (respProductos ){
-                    setState(() {
-                      listaProductos = construirListaDeProductos( respProductos );
-                    });
-                  }); */
-                });
+  @override
+  void initState() {
+    obtenerTiendas();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Stack(
+          children: <Widget>[
+            GoogleMap(
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+                getMyPosition();
               },
+              buildingsEnabled: false,
+              myLocationEnabled: true,
+              rotateGesturesEnabled: false,
+              initialCameraPosition: posicionInicialCamara,
+              mapType: MapType.terrain,
+              markers: markerList,
+            ),
+
+            Center(
+              child: pantallaTienda(),
             )
-          );
-        }
+          ],
+        ),
+      );
+  } // Build Pantalla Map State
+
+  Future<void> getMyPosition() async{
+    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    moveMap(position.latitude, position.longitude);
+  }
+
+  void obtenerTiendas() async{
+    final futureVendors = cliente.getVendorsWithAddress();
+    futureVendors.then( (resp) async{
+      var newMarkerList = Set<Marker>();
+
+      int numeroDeClientes = resp.length;
+      for( var i = 0 ; i < numeroDeClientes; i++ ) { 
+        String direccion = resp[i]["address"]["address_1"].toString();
+        String ciudad = resp[i]["address"]["city"].toString();
+        String comuna = resp[i]["address"]["state"].toString();
+        String pais = resp[i]["address"]["country"].toString();
+        List<Placemark> placemark = await Geolocator().placemarkFromAddress("$direccion, $ciudad, $comuna, $pais");
+        newMarkerList.add(
+          Marker(
+            markerId: MarkerId( resp[i]["id"].toString() ),
+            position: LatLng(placemark[0].position.latitude, placemark[0].position.longitude),
+            onTap: (){
+              print("holi");
+              setState(() {
+                closeWindow = false;
+                nombreTienda = resp["login"].toString();
+                idVendor = resp[i]["id"].toString();
+                listaProductos = FutureServerCall(
+                  llamadaCliente: cliente.getProductos(idVendor),
+                  completedCallWidgetFunction: construirListaDeProductos, 
+                );
+              });
+            },
+          )
+        );
+      }
+
+      /* Después de crear la lista de marcadores los seteo */
+      setState((){
+        markerList = newMarkerList;
       }); 
     });
   }
@@ -99,49 +119,18 @@ class _PantallaMapsState extends State<PantallaMaps> {
       );
     }
   }
-
-  @override
-  Widget build(BuildContext context) {
-    obtenerTiendas();
-    return Container(
-        child: Stack(
-          children: <Widget>[
-            GoogleMap(
-              onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
-              },
-              buildingsEnabled: false,
-              myLocationEnabled: true,
-              rotateGesturesEnabled: false,
-              initialCameraPosition: CameraPosition(
-                target: widget.initialMapPosition,
-                zoom: 15,
-              ),
-              mapType: MapType.terrain,
-              markers: markerList,
-            ),
-
-            Center(
-              child: pantallaTienda(),
-            )
-          ],
-        ),
-      );
   
-  } // Build Pantalla Map State
-  
-  Future<void> moveMap() async {
+  Future<void> moveMap(latitud, longitud) async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(
-          target: LatLng(-22.4542482,-68.923041),
+          target: LatLng(latitud,longitud),
           zoom: 15,
         )
       )
     );
   } // Move Map
-
 }// Pantalla Map State
 
 class MapStore extends StatelessWidget {

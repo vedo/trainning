@@ -140,7 +140,7 @@ class _CrearAnuncioState extends State<CrearAnuncio> {
                   },
                 ),
 
-                SizedBox(height: 60,),
+                SizedBox(height: bottomPadding,),
               ],
           ),
         ),

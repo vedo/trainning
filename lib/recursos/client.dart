@@ -60,7 +60,6 @@ class ClientApi{
           headers: <String, String>{'authorization' : bearerToken,
             'Content-Type'  : 'application/json'},
           body: bodyMap);
-      print(resp.body);
       return resp.body;
     }
     final product = await postResp("upload-product");
@@ -84,11 +83,9 @@ class ClientApi{
     var response = await request.send();
 
     // algo = response.stream.
-    //print("esto es response $response");
     String body = await response.stream.bytesToString();
     //  StreamSubscription<String> body;
     //  body = response.stream.transform(utf8.decoder).listen((value)=>value.toString());
-    //print("esto es body" );
     //body.onData((data) {print(data);});
 
     //devuelve el body del response a la api
@@ -116,15 +113,14 @@ class ClientApi{
     String host = "http://algocerca.cl:8080/";
     String endPoint = "query/";
     http.Response resp = await http.post("$host$endPoint", body: body);
-    print(resp.body);
     return resp.body;
   }
 
 
-  Future getMyProfile() async{
+  /* Future getMyProfile() async{
     final myprofile = profileFromJson(await getResp(endPoint: "myprofile/", ));
     return myprofile;
-  }
+  } */
 
 
   Future<http.Response> confirmValidation({String url}) async {
@@ -197,7 +193,6 @@ class ClientApi{
   Future getResp({String endPoint, String response}) async {
     sharedPreferences = await SharedPreferences.getInstance();
     String token = sharedPreferences.getString("token");
-
     String bearerToken = 'Bearer ' + token;
     http.Response resp = await http.get(
       'http://algocerca.cl:8080/$endPoint',
@@ -289,16 +284,8 @@ class ClientApi{
 
   }
 
+  /* Llamadas al servidor GET, POST, PUT */
 
-  /* POSTS QUE SE USAN EN MI BARRIO */
-  /* Funciones: 
-      [X] Ver lista de posts
-      [X] Ver mis posts
-      [ ] Ver el detalle de un post ( contenido y lista de comentarios )
-      [ ] Comentar un post
-      [X] Crear un post
-      [ ] Editar un post
-  */
   Future getRawResponse({String endPoint}) async {
     sharedPreferences = await SharedPreferences.getInstance();
     String token = sharedPreferences.getString("token");
@@ -312,7 +299,6 @@ class ClientApi{
   Future postRawResponse({String endPoint, String bodyMap}) async {
     sharedPreferences = await SharedPreferences.getInstance();
     String token = sharedPreferences.getString("token");
-    //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYWxnb2NlcmNhLmNsIiwiaWF0IjoxNTk0NzYzMzU1LCJuYmYiOjE1OTQ3NjMzNTUsImV4cCI6MTU5NTM2ODE1NSwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiNCJ9fX0.JsdLjGi_VOJUYQ_qE4ums-EMDc2av5gzV1Nm8q5smXM";
     String bearerToken = token!= null ? 'Bearer ' + token : 'Bearer ';
     return await http.post(
       'https://algocerca.cl/wp-json/$endPoint',
@@ -324,11 +310,31 @@ class ClientApi{
     );
   }
 
-  Future<String> getMyId() async{
-    http.Response resp = await getRawResponse(endPoint: "wp/v2/users/me?_wpnonce=9467a0bf9c");
-    return resp.statusCode == 200 ? jsonDecode(resp.body)["id"].toString() : "error";
+  Future putRawResponse({String endPoint, String bodyMap}) async {
+    sharedPreferences = await SharedPreferences.getInstance();
+    String token = sharedPreferences.getString("token");
+    String bearerToken = token!= null ? 'Bearer ' + token : 'Bearer ';
+    return await http.put(
+      'https://algocerca.cl/wp-json/$endPoint',
+      headers: {
+        'authorization' : bearerToken,
+        'Content-Type'  : 'application/json'
+      },
+      body: bodyMap
+    );
   }
 
+
+  /* POSTS QUE SE USAN EN MI BARRIO */
+  /* Funciones: 
+      [X] Ver lista de posts
+      [X] Ver mis posts
+      [ ] Ver el detalle de un post ( contenido y lista de comentarios )
+      [ ] Comentar un post
+      [X] Crear un post
+      [ ] Editar un post
+  */
+    //String token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvYWxnb2NlcmNhLmNsIiwiaWF0IjoxNTk0NzYzMzU1LCJuYmYiOjE1OTQ3NjMzNTUsImV4cCI6MTU5NTM2ODE1NSwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiNCJ9fX0.JsdLjGi_VOJUYQ_qE4ums-EMDc2av5gzV1Nm8q5smXM";
   Future getPosts() async{
     http.Response resp = await getRawResponse(endPoint: "wp/v2/posts");
     return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
@@ -340,12 +346,6 @@ class ClientApi{
     return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
   }
 
-  Future<String> getUserName(userId) async{
-    /* Este debería salir de un getUserById(userId) */
-    http.Response resp = await getRawResponse(endPoint: "wp/v2/users/$userId");
-    return resp.statusCode == 200 ? jsonDecode(resp.body)["name"] : "";
-  }
-
   Future createPost({String postTitle, String contenido}) async{
     String bodyMap = jsonEncode({
       "title": postTitle,
@@ -354,6 +354,78 @@ class ClientApi{
     });
     http.Response resp = await postRawResponse(endPoint: "wp/v2/posts", bodyMap: bodyMap);
     return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
+  }
+
+  /* USER FUNCTIONS */
+  /* Funciones: 
+      [X] Ver mi perfil [GET]
+      [ ] Actualizar mi perfil [PUT]
+  */
+
+  // línea 120 está la función 
+  /* Future getMyProfile() async{
+    final myprofile = profileFromJson(await getResp(endPoint: "myprofile/", ));
+    return myprofile;
+  } */
+
+  Future getUserProfile(userId) async{
+    http.Response resp = await getRawResponse(endPoint: "wcmp/v1/vendors/$userId");
+    return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
+  }
+
+  Future<String> getMyId() async{
+    http.Response resp = await getRawResponse(endPoint: "wp/v2/users/me?_wpnonce=9467a0bf9c");
+    return resp.statusCode == 200 ? jsonDecode(resp.body)["id"].toString() : "error";
+  }
+
+  Future getMyProfile() async{
+    String myID = await getMyId();
+    return getUserProfile(myID);
+  }
+
+  Future<String> getUserName(userId) async{
+    /* Este debería salir de un getUserById(userId) */
+    http.Response resp = await getRawResponse(endPoint: "wp/v2/users/$userId");
+    return resp.statusCode == 200 ? jsonDecode(resp.body)["name"] : "";
+  }
+
+  Future<String> getUserEmail(userId) async{
+    http.Response resp = await getRawResponse(endPoint: "wcmp/v1/vendors/$userId");
+    return resp.statusCode == 200 ? jsonDecode(resp.body)["email"] : "";
+  }
+
+  Future updateMyProfile({String direccion, String ciudad, String comuna, String telefono}) async{
+    String myID = await getMyId();
+    String bodyMap = jsonEncode({
+      "address":{
+        "address_1": direccion,
+        "city": ciudad,
+        "state": comuna,
+        "phone": telefono,
+      },
+      //Esto lo tengo que agregar por que si no lo pongo me borra el mail
+      "email": await getUserEmail(myID)
+    });
+    print(bodyMap.toString());
+    http.Response resp = await putRawResponse(endPoint: "wcmp/v1/vendors/$myID", bodyMap: bodyMap);
+    print(jsonDecode(resp.body)["address"].toString());
+    return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
+  }
+
+  /* VENDOR FUNCTIONS */
+  /* Funciones: 
+      [X] Ver mi perfil [GET]
+      [ ] Actualizar mi perfil [PUT]
+  */
+
+  Future getVendorsWithAddress() async{
+    http.Response resp = await getRawResponse(endPoint: "wcmp/v1/vendors/?conDireccion=1");
+    return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
+  }
+
+  Future getVendorPhone(vendorID) async{
+    http.Response resp = await getRawResponse(endPoint: "wcmp/v1/vendors/$vendorID");
+    return resp.statusCode == 200 ? jsonDecode(resp.body)["address"]["phone"] : "";
   }
 
 }

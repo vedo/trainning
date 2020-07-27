@@ -1,44 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trainning/recursos/constant.dart';
 
-/* Bottom bar de la aplicación */
-/* PENDIENTE: Que el item seleccionado se mueste de otro color */
-/* PENDIENTE: Que se quede abajo y que no interrumpa el scroll: solución posible, que sea realmente un bottom bar */
-class CustomBottomBar extends StatelessWidget {
-  final List<Icon> iconos = [Icon(Icons.home), Icon(Icons.map), Icon(Icons.shopping_basket), Icon(Icons.people)];
-  final List<String> textos = ["Mi Tienda","Mapa","Mercado","Mi Barrio",];
-  final List<String> enlaces = ["/Anuncios","/Mapa","/Mercado","/MiBarrio",];
-  
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        height: 70,
-        decoration: BoxDecoration(
-          gradient: gradienteAzul,
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))
-        ),
 
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: this.textos.map( (nombreBoton) {
-            int index = textos.indexOf(nombreBoton);
-            return Column(
-              children: <Widget>[
-                IconButton(
-                  icon: this.iconos[index],
-                  onPressed: () {  Navigator.popAndPushNamed(context, this.enlaces[index]);  },
-                ),
-                Text( nombreBoton )
-              ],
-            );
-          }).toList()
-        ),
-      ),
-    );
-  }
-} // Bottom bar
 
 /* Menú de que se muestra en la pantalla mi tienda */
 /* Muestra Anuncios, Pedidos y Compras */
@@ -99,3 +62,77 @@ class CustomAppBar extends StatelessWidget {
     );
   }
 } // Custom appbar
+
+/* Bottom bar de la aplicación */
+/* PENDIENTE: Que el item seleccionado se mueste de otro color */
+/* PENDIENTE: Que se quede abajo y que no interrumpa el scroll: solución posible, que sea realmente un bottom bar */
+class CustomBottomBar extends StatelessWidget {
+  final List<Icon> iconos = [Icon(Icons.home), Icon(Icons.map), Icon(Icons.shopping_basket), Icon(Icons.people)];
+  final List<String> textos = ["Mi Tienda","Mapa","Mercado","Mi Barrio",];
+  final List<String> enlaces = ["/Anuncios","/Mapa","/Mercado","/MiBarrio",];
+  
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      //bottom: 0,
+      child: Container(
+        height: 70,
+        decoration: BoxDecoration(
+          gradient: gradienteAzul,
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))
+        ),
+
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: this.textos.map( (nombreBoton) {
+            int index = textos.indexOf(nombreBoton);
+            return Column(
+              children: <Widget>[
+                IconButton(
+                  icon: this.iconos[index],
+                  onPressed: () {  Navigator.popAndPushNamed(context, this.enlaces[index]);  },
+                ),
+                Text( nombreBoton )
+              ],
+            );
+          }).toList()
+        ),
+      ),
+    );
+  }
+} // Bottom bar
+
+class NewBottomBar extends StatefulWidget {
+  @override
+  _NewBottomBarState createState() => _NewBottomBarState();
+}
+
+class _NewBottomBarState extends State<NewBottomBar> {
+  final List<Icon> iconos = [Icon(Icons.home), Icon(Icons.map), Icon(Icons.shopping_basket), Icon(Icons.people)];
+  final List<String> textos = ["Mi Tienda","Mapa","Mercado","Mi Barrio",];
+  final List<String> enlaces = ["/Anuncios","/Mapa","/Mercado","/MiBarrio",];
+
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+        items: this.textos.map( (nombreBoton) {
+            int index = textos.indexOf(nombreBoton);
+            return BottomNavigationBarItem(
+              icon: this.iconos[index],
+              title: Text(nombreBoton),
+            );
+          }).toList(),
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: _onItemTapped,
+      );
+  }
+}

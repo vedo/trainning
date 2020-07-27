@@ -230,7 +230,7 @@ class FutureServerCall extends StatelessWidget {
           case ConnectionState.none:
           case ConnectionState.waiting:
             return SpinKitThreeBounce(
-              color: Colors.blue,
+              color: gradientBlue,
               size: 50.0,
             );
           default:

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:trainning/recursos/ScreenArgument.dart';
 import 'package:trainning/recursos/client.dart';
+import 'package:trainning/recursos/constant.dart';
 
 /* PENDIENTE: ORDENAR ESTE CÓDIGO */
 
+/* TARJETA UTILIZADA PARA MERCADO */
 class Tarjeta1 extends StatelessWidget {
   final String nombreProducto;
   final String precioProducto;
@@ -20,24 +22,21 @@ class Tarjeta1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container( // Tarjeta producto
-      margin: EdgeInsets.only(right: 10),
-      height: 150,
-      width: 300,
+      margin: EdgeInsets.only(right: 15),
+      width: 300, height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(34),
-        color: Colors.blue.withOpacity(.8)
+        color: gradientBlue
       ),
       child: Stack(
         children: <Widget>[
 
           Positioned( //Imágen del producto
-            top: 5,
-            left: 5,
+            top: 5, left: 5, bottom: 5,
             child: Container( 
-              height: 145,
-              width: 145,
+              width: 145, height: 145,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(34),
+                borderRadius: BorderRadius.circular(30),
                 //color: kPrimaryColor.withOpacity(0.4),
                 image: DecorationImage(
                   image: this.imagenProducto,
@@ -48,11 +47,9 @@ class Tarjeta1 extends StatelessWidget {
           ),
 
           Positioned( // Bloque de texto
-            left: 160,
-            top: 15,
+            left: 160, top: 10, right: 10,
             child: Container(
-              height: 160,
-              width: 150,
+              width: 150, height: 160,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -67,9 +64,9 @@ class Tarjeta1 extends StatelessWidget {
           ),
 
           Positioned( // Botón detalle producto
-            left: 160,
-            bottom: 10,
+            right: 10, bottom: 5,
             child: FlatButton(
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               child: Text("Ver producto"),
               onPressed: () {
                 Navigator.pushNamed(
@@ -253,17 +250,15 @@ class TarjetaPost extends StatelessWidget {
       height: 150,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(34),
-        color: Colors.blue[50]
+        color: gradientBlue
       ),
       child: Stack(
         children: <Widget>[
 
           Positioned( // Bloque de texto
-            left: 20,
-            top: 15,
+            left: 20, top: 15, right: 20,
             child: Container(
-              height: 160,
-              width: MediaQuery.of(context).size.width - 40,
+              height: 160, width: MediaQuery.of(context).size.width - 40,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -271,15 +266,15 @@ class TarjetaPost extends StatelessWidget {
                     this.titulo,
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  Text(this.contenido, overflow: TextOverflow.visible,),
+                  SizedBox(height: 5,),
+                  Text(this.contenido),
                 ],
               ),
             ),
           ),
 
           Positioned( // Botón detalle
-            right: 20,
-            bottom: 5,
+            right: 20, bottom: 5,
             child: FlatButton(
               child: Text("Leer más"),
               onPressed: () {
@@ -295,8 +290,7 @@ class TarjetaPost extends StatelessWidget {
           ),
 
           Positioned( // Botón detalle
-            left: 20,
-            bottom: 20,
+            left: 20, bottom: 20,
             child: FutureBuilder(
               future: cliente.getUserName(this.id), // Client get posts ? se puede construir esta parte de la app con los post del blog ?
               builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -319,8 +313,10 @@ class TarjetaPost extends StatelessWidget {
 
 /* Modelo gráfico de una tienda, se usa en pestaña '/Mercado' */
 class Tienda extends StatelessWidget {
+  
   final String nombreTienda;
   final Widget listaDeProductos;
+
   const Tienda({
     Key key,
     this.nombreTienda,
@@ -330,22 +326,34 @@ class Tienda extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 20, left: 20),
+      margin: EdgeInsets.only(bottom: 30, left: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            child: Text(
-              this.nombreTienda,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold
-              ),
-            )
-          ),
-          SizedBox(height: 5,),
           
           Container(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  height: 40, width: 40,
+                  decoration: BoxDecoration( borderRadius: BorderRadius.circular(100), color: Colors.grey ),
+                  child: Icon(Icons.face),
+                ),
+                SizedBox(width: 10,),
+                Text(
+                  this.nombreTienda,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+              ],
+            )
+          ),
+          
+          SizedBox(height: 10,),
+          Container( // Contenedor de lista de tiendas
             height: 160,
             child: this.listaDeProductos,
           ),
