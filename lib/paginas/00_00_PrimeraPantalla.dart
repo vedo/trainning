@@ -13,7 +13,6 @@ class PrimeraPantalla extends StatefulWidget {
 }
 
 class _PrimeraPantallaState extends State<PrimeraPantalla> {
-  
   String mensaje;
   SharedPreferences sharedPreferences;
 

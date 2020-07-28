@@ -13,12 +13,12 @@ const kBlackColor     = Color(0xFF000000);
 const kTextColor      = Color(0xFF1D150B);
 const kPrimaryColor   = Color(0xFFFB475F);
 const kSecondaryColor = Color(0xFFF5E1CB);
-const kBorderColor    = Color(0xFFDDDDDD);
+const kBorderColor    = Color(0xFFBBBBBB);
 
 const gradientOrange  = Color(0xFFAB4919); 
 const gradientYellow  = Color(0xFFDFBE20); 
-const gradientBlue    = Color(0xFF7897E4); 
-const gradientPurple  = Color(0xFF8344E2); 
+const gradientBlue    = Color(0xFF1E88E5); 
+const gradientPurple  = Color(0xFF7C4DFF); 
 
 //Color(0xFFFFD600);
 //Color(0xFFC43C00);
@@ -51,9 +51,9 @@ const LinearGradient gradientenNaranjoDiagonal = LinearGradient(
 
 BoxDecoration imagenDeFondo = BoxDecoration(
   image: DecorationImage(
-    image: AssetImage("assets/img/SeamlessBG.png"),
+    image: AssetImage("assets/img/seamless555.png"),
     fit: BoxFit.cover,
-    colorFilter: new ColorFilter.mode(Colors.red[100].withOpacity(0.05), BlendMode.dstIn),
+    //colorFilter: new ColorFilter.mode(Colors.red[100].withOpacity(0.05), BlendMode.dstIn),
   ),
 );
 

@@ -32,7 +32,6 @@ Widget construirPaginaDetalleProducto(BuildContext context, AsyncSnapshot snapsh
   final data = snapshot.data;
   final vendorID = data["vendor"];
   final futureVendorPhone = cliente.getVendorPhone(vendorID);
-  print(parse(data["short_description"]).body.text);
   String vendorPhone;
   futureVendorPhone.then( (value) => vendorPhone = value );
   

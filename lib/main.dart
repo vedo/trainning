@@ -18,9 +18,9 @@ import 'package:trainning/paginas/03_01_DetalleProducto.dart';
 import 'package:trainning/paginas/04_00_MiBarrio.dart';
 import 'package:trainning/paginas/04_01_DetallePost.dart';
 import 'package:trainning/paginas/04_02_CrearPost.dart';
+import 'package:trainning/paginas/04_04_ComentarPost.dart';
 import 'package:trainning/paginas/05_00_VerPerfil.dart';
 import 'package:trainning/paginas/05_01_EditarPerfil.dart';
-
 
 void main(){ 
   //print( checkLogIn() );
@@ -32,6 +32,7 @@ void main(){
         '/':                (context) => PrimeraPantalla(),
         '/LogIn':           (context) => LogInMenu(),
         '/CreateUser':      (context) => CreateUser(),
+        
         /* 1.0 Sección MI TIENDA */
         '/Anuncios':        (context) => StandardMenu( contenido: MisAnuncios(),     appBarTitle: 'Mis anuncios',        menuType: "full", menuIndex: 0,),
         '/CrearAnuncio':    (context) => StandardMenu( contenido: CrearAnuncio(),    appBarTitle: 'Crear anuncio',       menuType: "topBottom",),
@@ -46,13 +47,14 @@ void main(){
         /* Resto de secciones en el bottombar */
         '/Mapa':            (context) => StandardMenu( contenido: PantallaMaps(),    appBarTitle: 'Mapa',                menuType: "topBottom",),
         
-        '/Mercado':         (context) => StandardMenu( contenido: StoreList(),       appBarTitle: 'Lista de tiendas',    menuType: "topBottom",),
+        '/Mercado':         (context) => StandardMenu( contenido: StoreList(),       appBarTitle: 'Mercado',             menuType: "topBottom",),
         '/DetalleProducto': (context) => DetalleProducto(),
         //'/DetalleProducto': (context) => StandardMenu( contenido: DetalleProducto(), appBarTitle: 'Detalle producto',    menuType: "topBottom",),
 
         '/MiBarrio':        (context) => StandardMenu( contenido: MiBarrio(),        appBarTitle: 'Mi Barrio',           menuType: "topBottom",),
-        '/DetallePost':     (context) => StandardMenu( contenido: DetallePost(),     appBarTitle: 'Detalle publicación', menuType: "topBottom",),
+        '/DetallePost':     (context) => DetallePost(),
         '/CrearPost':       (context) => StandardMenu( contenido: CrearPost(),       appBarTitle: 'Crear publicación',   menuType: "topBottom",),
+        '/ComentarPost':    (context) => StandardMenu( contenido: ComentarPost(),    appBarTitle: 'Comentar Post',       menuType: "topBottom",),
 
         /* Otros */
         '/Perfil':          (context) => StandardMenu( contenido: ProfileMenu(),     appBarTitle: 'Mi Perfil',           menuType: "topBottom",),

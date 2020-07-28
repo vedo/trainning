@@ -45,10 +45,10 @@ Widget construirListaDeProductos(BuildContext context, AsyncSnapshot snapshot) {
     itemBuilder: (BuildContext context, int index) {
       String idProducto = snapshot.data[index].id.toString();
       return Tarjeta1(
-        nombreProducto: snapshot.data[index].name.toString(),
-        precioProducto: snapshot.data[index].price.toString(),
-        idProducto: idProducto,
-        imagenProducto: NetworkImage(snapshot.data[index].images[0].src),
+        tituloTarjeta: snapshot.data[index].name.toString(),
+        precioTarjeta: snapshot.data[index].price.toString(),
+        id: idProducto,
+        imagen: NetworkImage(snapshot.data[index].images[0].src),
       );
     },
   );

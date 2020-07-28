@@ -2,10 +2,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:html/parser.dart';
 //import 'package:trainning/recursos/constant.dart';
 //import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:trainning/recursos/client.dart';
 import 'package:trainning/recursos/componentes.dart';
+import 'package:trainning/recursos/tarjetas.dart';
 
 class PantallaMaps extends StatefulWidget {
   @override
@@ -13,12 +15,11 @@ class PantallaMaps extends StatefulWidget {
 }
 
 class _PantallaMapsState extends State<PantallaMaps> {
-  
   GoogleMapController mapController;
   Completer<GoogleMapController> _controller = Completer();
   CameraPosition posicionInicialCamara = CameraPosition(
     zoom: 15,
-    target: LatLng(-22.454104, -68.918158),
+    target: LatLng(-33.446399,-70.6618155),
   );
   var markerList = Set<Marker>();
  
@@ -26,6 +27,7 @@ class _PantallaMapsState extends State<PantallaMaps> {
   String nombreTienda = "";
   String idVendor = "";
   Widget listaProductos = Container();
+  Widget listaPublicaciones = Container();
 
   @override
   void initState() {
@@ -81,14 +83,17 @@ class _PantallaMapsState extends State<PantallaMaps> {
             markerId: MarkerId( resp[i]["id"].toString() ),
             position: LatLng(placemark[0].position.latitude, placemark[0].position.longitude),
             onTap: (){
-              print("holi");
               setState(() {
                 closeWindow = false;
-                nombreTienda = resp["login"].toString();
+                nombreTienda = resp[i]["login"].toString();
                 idVendor = resp[i]["id"].toString();
                 listaProductos = FutureServerCall(
                   llamadaCliente: cliente.getProductos(idVendor),
                   completedCallWidgetFunction: construirListaDeProductos, 
+                );
+                listaPublicaciones = FutureServerCall(
+                  llamadaCliente: cliente.getMyPosts(),
+                  completedCallWidgetFunction: construirListaDePosts,
                 );
               });
             },
@@ -116,6 +121,7 @@ class _PantallaMapsState extends State<PantallaMaps> {
           });
         },
         listaDeProductos: listaProductos,
+        listaDePublicaciones: listaPublicaciones,
       );
     }
   }
@@ -133,176 +139,34 @@ class _PantallaMapsState extends State<PantallaMaps> {
   } // Move Map
 }// Pantalla Map State
 
-class MapStore extends StatelessWidget {
-  final VoidCallback onPressed;
-  final String nombreTienda;
-  final Widget listaDeProductos;
-
-  const MapStore({
-    Key key,
-    this.onPressed,
-    this.nombreTienda,
-    this.listaDeProductos,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        width: 350,
-        height: 300,
-        decoration: BoxDecoration(
-          color: Colors.green.withOpacity(0.8),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Stack(
-          children: <Widget>[
-            Positioned(
-              right: 10,
-              top: 10,
-              child: Container(
-                child: RawMaterialButton(
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  constraints: BoxConstraints(minWidth: 0.0, minHeight: 0.0),
-                  padding: EdgeInsets.zero,
-                  onPressed: this.onPressed,
-                  child: Icon(Icons.close)
-                ),
-              )
-            ),
-            
-            Container(
-              padding: EdgeInsets.only(top: 10, left: 10,),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        width: 70,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        child: Icon(Icons.person),
-                      ),
-                      SizedBox(width: 10,),
-                      Text(
-                        this.nombreTienda,
-                        style: TextStyle(
-                          fontSize: 20
-                        ),
-                      )
-                    ],
-                  ),
-
-                  SizedBox(height: 15,),
-
-                  Container(
-                    height: 160,
-                    child: this.listaDeProductos,
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      );
-  }
-} // MapStore
-
-class TarjetaProducto extends StatelessWidget {
-  final String nombreProducto;
-  final String precioProducto;
-  final String idProducto;
-  final NetworkImage imagenProducto;
-
-  const TarjetaProducto({
-    Key key,
-    this.nombreProducto,
-    this.precioProducto,
-    this.idProducto,
-    this.imagenProducto,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container( // Tarjeta producto
-      margin: EdgeInsets.only(left: 10),
-      height: 160,
-      width: 300,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(34),
-        color: Colors.blue.withOpacity(.6)
-      ),
-      child: Stack(
-        children: <Widget>[
-
-          Positioned( //Imágen del producto
-            top: 5,
-            left: 5,
-            child: Container( 
-              height: 145,
-              width: 145,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(34),
-                //color: kPrimaryColor.withOpacity(0.4),
-                image: DecorationImage(
-                  image: this.imagenProducto,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-
-          Positioned( // Bloque de texto
-            left: 160,
-            top: 15,
-            child: Container(
-              height: 160,
-              width: 150,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    this.nombreProducto,
-                    style: Theme.of(context).textTheme.headline6,
-                  ),
-                  Text( "\$ " + this.precioProducto ) ,
-                ],
-              ),
-            ),
-          ),
-
-          Positioned( // Botón detalle
-            left: 160,
-            bottom: 10,
-            child: FlatButton(
-              child: Text("Ver producto"),
-              onPressed: () {
-                Navigator.popAndPushNamed(context, '/DetalleProducto',);
-              },
-            ),
-          )
-
-        ],
-      ),
-    );
-  }
-} //TarjetaProducto
-
 Widget construirListaDeProductos(BuildContext context, AsyncSnapshot snapshot) {
   return ListView.builder(
     scrollDirection: Axis.horizontal,
     itemCount: snapshot.data.length,
     itemBuilder: (BuildContext context, int index) {
       String idProducto = snapshot.data[index].id.toString();
-      return TarjetaProducto(
-        nombreProducto: snapshot.data[index].name.toString(),
-        precioProducto: snapshot.data[index].price.toString(),
-        idProducto: idProducto,
-        imagenProducto: NetworkImage(snapshot.data[index].images[0].src),
+      return Tarjeta1(
+        tituloTarjeta: snapshot.data[index].name.toString(),
+        precioTarjeta: snapshot.data[index].price.toString(),
+        id: idProducto,
+        imagen: NetworkImage(snapshot.data[index].images[0].src),
+      );
+    },
+  );
+} 
+
+Widget construirListaDePosts(BuildContext context, AsyncSnapshot snapshot) {
+  final data = snapshot.data;
+  return ListView.builder(
+    scrollDirection: Axis.horizontal,
+    itemCount: snapshot.data.length,
+    itemBuilder: (BuildContext context, int index) {
+      String idPost = data[index]["id"].toString();
+      return TarjetaPost(
+        titulo: parse(data[index]["title"]["rendered"]).body.text,
+        id: idPost,
+        contenido: parse(data[index]["content"]["rendered"]).body.text,
+        margenHorizontal: true,
       );
     },
   );

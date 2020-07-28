@@ -230,7 +230,7 @@ class ClientApi{
     return myproducts;
   }
 
-  /* EDITADO RAW VOLVERATRAS*/
+  /* EDITADO RAW VOLVER ATRAS*/
   //llama el detalle del producto (id), desde la API, y devuelve los datos en un objeto
   Future getDetailProduct<map>(productId) async{
     /* final detailProduct = detailProductFromJson(await getResp(endPoint: "wc/v3/products/$id"));
@@ -356,6 +356,22 @@ class ClientApi{
     return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
   }
 
+  Future getDetailPost<map>(postId) async{
+    http.Response resp = await getRawResponse(endPoint: "wp/v2/posts/$postId");
+    return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
+  }
+
+  Future commentPost({String contenido, String postId}) async{
+    String myID = await getMyId();
+    String bodyMap = jsonEncode({
+      "post": postId,
+      "author": myID,
+      "content": contenido,
+    });
+    http.Response resp = await postRawResponse(endPoint: "wp/v2/comments", bodyMap: bodyMap);
+    return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
+  }
+
   /* USER FUNCTIONS */
   /* Funciones: 
       [X] Ver mi perfil [GET]
@@ -406,9 +422,9 @@ class ClientApi{
       //Esto lo tengo que agregar por que si no lo pongo me borra el mail
       "email": await getUserEmail(myID)
     });
-    print(bodyMap.toString());
+    //print(bodyMap.toString());
     http.Response resp = await putRawResponse(endPoint: "wcmp/v1/vendors/$myID", bodyMap: bodyMap);
-    print(jsonDecode(resp.body)["address"].toString());
+    //print(jsonDecode(resp.body)["address"].toString());
     return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
   }
 

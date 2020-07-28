@@ -5,18 +5,22 @@ import 'package:trainning/recursos/constant.dart';
 
 /* PENDIENTE: ORDENAR ESTE CÓDIGO */
 
+double radioBorde = 28;
+
 /* TARJETA UTILIZADA PARA MERCADO */
 class Tarjeta1 extends StatelessWidget {
-  final String nombreProducto;
-  final String precioProducto;
-  final String idProducto;
-  final NetworkImage imagenProducto;
+  final String tituloTarjeta;
+  final String precioTarjeta;
+  final String id;
+  final NetworkImage imagen;
+  final String nombreBoton;
 
   const Tarjeta1({
-    this.nombreProducto,
-    this.precioProducto,
-    this.idProducto,
-    this.imagenProducto,
+    this.tituloTarjeta,
+    this.precioTarjeta,
+    this.id,
+    this.imagen,
+    this.nombreBoton: "Ver Producto",
   });
 
   @override
@@ -25,8 +29,8 @@ class Tarjeta1 extends StatelessWidget {
       margin: EdgeInsets.only(right: 15),
       width: 300, height: 150,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(34),
-        color: gradientBlue
+        borderRadius: BorderRadius.circular(radioBorde),
+        color: kBorderColor
       ),
       child: Stack(
         children: <Widget>[
@@ -36,10 +40,10 @@ class Tarjeta1 extends StatelessWidget {
             child: Container( 
               width: 145, height: 145,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(radioBorde-4),
                 //color: kPrimaryColor.withOpacity(0.4),
                 image: DecorationImage(
-                  image: this.imagenProducto,
+                  image: this.imagen,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -54,10 +58,10 @@ class Tarjeta1 extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    this.nombreProducto,
+                    this.tituloTarjeta,
                     style: Theme.of(context).textTheme.headline6,
                   ),
-                  Text( "\$ " + this.precioProducto ) ,
+                  this.precioTarjeta!="" ? Text( "\$ " + this.precioTarjeta ) : Container() ,
                 ],
               ),
             ),
@@ -67,12 +71,12 @@ class Tarjeta1 extends StatelessWidget {
             right: 10, bottom: 5,
             child: FlatButton(
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              child: Text("Ver producto"),
+              child: Text(this.nombreBoton),
               onPressed: () {
                 Navigator.pushNamed(
                   context, '/DetalleProducto',
                   arguments: ScreenArguments(
-                    id: this.idProducto, 
+                    id: this.id, 
                     apiClient: cliente
                   ),
                 );
@@ -86,7 +90,7 @@ class Tarjeta1 extends StatelessWidget {
   } // TarjetaProducto Build
 } // TarjetaProducto
 
-
+/* DONDE SE USA ? */
 class Tarjeta2 extends StatelessWidget {
   final String buttonText;
   final List<Widget> cuerpo;
@@ -237,20 +241,22 @@ class TarjetaPost extends StatelessWidget {
   final String titulo;
   final String id;
   final String contenido;
+  final bool margenHorizontal;
   const TarjetaPost({
     this.titulo,
     this.id,
     this.contenido,
+    this.margenHorizontal: false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container( // Tarjeta producto
-      margin: EdgeInsets.only(bottom: 10),
-      height: 150,
+      margin: EdgeInsets.only(bottom: 10, right: margenHorizontal ? 15 : 0 ),
+      height: 150, width: 300,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(34),
-        color: gradientBlue
+        color: kBorderColor
       ),
       child: Stack(
         children: <Widget>[
@@ -258,7 +264,7 @@ class TarjetaPost extends StatelessWidget {
           Positioned( // Bloque de texto
             left: 20, top: 15, right: 20,
             child: Container(
-              height: 160, width: MediaQuery.of(context).size.width - 40,
+              height: 160, 
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -273,12 +279,12 @@ class TarjetaPost extends StatelessWidget {
             ),
           ),
 
-          Positioned( // Botón detalle
+          Positioned( // Botón Leer Más
             right: 20, bottom: 5,
             child: FlatButton(
               child: Text("Leer más"),
               onPressed: () {
-                Navigator.popAndPushNamed(
+                Navigator.pushNamed(
                   context, '/DetallePost',
                   arguments: ScreenArguments(
                     id: this.id, 
@@ -335,12 +341,12 @@ class Tienda extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Container(
+                /* Container(
                   height: 40, width: 40,
                   decoration: BoxDecoration( borderRadius: BorderRadius.circular(100), color: Colors.grey ),
                   child: Icon(Icons.face),
-                ),
-                SizedBox(width: 10,),
+                ),*/
+                SizedBox(width: 5,), 
                 Text(
                   this.nombreTienda,
                   style: TextStyle(
@@ -362,3 +368,100 @@ class Tienda extends StatelessWidget {
     );
   } // Tienda Build
 } //
+
+
+/* TARJETA QUE SE MUESTRA AL ABRIR UNA TIENDA EN EL MAPA */
+class MapStore extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String nombreTienda;
+  final Widget listaDeProductos;
+  final Widget listaDePublicaciones;
+
+  const MapStore({
+    Key key,
+    this.onPressed,
+    this.nombreTienda,
+    this.listaDeProductos,
+    this.listaDePublicaciones
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        width: 350,
+        height: 520,
+        decoration: BoxDecoration(
+          color: gradientBlue.withOpacity(0.9),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              right: 10, top: 10,
+              child: Container(
+                child: RawMaterialButton(
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  constraints: BoxConstraints(minWidth: 0.0, minHeight: 0.0),
+                  onPressed: this.onPressed,
+                  child: Icon(Icons.close)
+                ),
+              )
+            ),
+            
+            Container(
+              padding: EdgeInsets.only(top: 10, left: 10,),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+
+                  Row(
+                    children: <Widget>[
+                      
+                      Container( /* Icono al costado del nombre */
+                        width: 70, height: 70,
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(100),
+                        ),
+                        child: Icon(Icons.person),
+                      ),
+
+                      SizedBox(width: 10,),
+                      Text(
+                        this.nombreTienda,
+                        style: TextStyle(
+                          fontSize: 20
+                        ),
+                      )
+                    ],
+                  ),
+
+                  SizedBox(height: 15,),
+                  Text(
+                    "Productos:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    height: 160,
+                    child: this.listaDeProductos,
+                  ),
+
+                  SizedBox(height: 30,),
+                  Text(
+                    "Comentarios en el barrio:",
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(height: 10,),
+                  Container(
+                    height: 160,
+                    child: this.listaDePublicaciones,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+  }
+} // MapStore

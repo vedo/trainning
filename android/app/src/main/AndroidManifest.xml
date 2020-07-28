@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="trainning"
+        android:label="AlgoCerca"
         android:icon="@mipmap/ic_launcher">
 
         <meta-data 
@@ -48,5 +48,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+
     </application>
 </manifest>
