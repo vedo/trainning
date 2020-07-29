@@ -7,12 +7,12 @@ import 'package:trainning/recursos/client.dart';
 import 'package:trainning/recursos/componentes.dart';
 import 'package:trainning/recursos/tarjetas.dart';
 
-class PantallaMaps extends StatefulWidget {
+class VerificarDireccion extends StatefulWidget {
   @override
-  _PantallaMapsState createState() => _PantallaMapsState();
+  _VerificarDireccionState createState() => _VerificarDireccionState();
 }
 
-class _PantallaMapsState extends State<PantallaMaps> {
+class _VerificarDireccionState extends State<VerificarDireccion> {
   GoogleMapController mapController;
   Completer<GoogleMapController> _controller = Completer();
   CameraPosition posicionInicialCamara = CameraPosition(

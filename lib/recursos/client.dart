@@ -372,6 +372,11 @@ class ClientApi{
     return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
   }
 
+  Future getComments({String postID}) async{
+    http.Response resp = await getRawResponse(endPoint: "wp/v2/comments?post=$postID");
+    return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
+  }
+
   /* USER FUNCTIONS */
   /* Funciones: 
       [X] Ver mi perfil [GET]

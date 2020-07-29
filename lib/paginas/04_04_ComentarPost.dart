@@ -19,6 +19,8 @@ class _ComentarPostState extends State<ComentarPost> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenArguments args = ModalRoute.of(context).settings.arguments;
+    this.postId = args.id;
     return Form(
       key: _formKey,
         child: Padding(

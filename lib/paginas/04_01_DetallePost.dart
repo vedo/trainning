@@ -6,9 +6,10 @@ import 'package:trainning/recursos/componentes.dart';
 import 'package:trainning/recursos/constant.dart';
 
 
+String idPost;
 
 class DetallePost extends StatelessWidget {
-  String idPost;
+  //String idPost;
   
   @override
   Widget build(BuildContext context) {
@@ -73,30 +74,9 @@ class DetallePost extends StatelessWidget {
               Expanded(
                 child: Container(
                   alignment: Alignment.topCenter,
-                  child: ListView(
-                    children: <Widget>[
-
-                      /* Acá tendría que enlistar los comentarios */
-                    /*  Container(
-                        height: 100,
-                        color: Colors.grey[300],
-                        child: Stack(
-                          children: <Widget>[
-                            Positioned(
-                              top: 10, left: 10,
-                              child: Text("Autor comentario"),
-                            ),
-                            Positioned(
-                              top: 30, left: 10, right: 10,
-                              child: Text("Comentario"),
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: 10,), */
-
-                      SizedBox(height: 100),
-                    ],
+                  child: FutureServerCall(
+                    llamadaCliente: cliente.getComments( postID: idPost ),
+                    completedCallWidgetFunction: construirListaDeComentarios,
                   ),
                 ),
               )
@@ -132,4 +112,60 @@ class DetallePost extends StatelessWidget {
       ],
     );
   } // construir
+
+  Widget construirListaDeComentarios(BuildContext context, AsyncSnapshot snapshot) {
+    final data = snapshot.data;
+    return ListView.builder(       // Verdadero : Sin error en message
+      scrollDirection: Axis.vertical,
+      itemCount: data.length,
+      itemBuilder: (BuildContext context, int index) {
+        String idComentario = data[index]["id"].toString();
+        return Container(
+          margin: EdgeInsets.only(bottom: 15),
+          height: 100,
+          color: Colors.grey[300],
+          child: Stack(
+            children: <Widget>[
+              Positioned(
+                top: 10, left: 10,
+                child: Text(data[index]["author_name"].toString()),
+              ),
+              Positioned(
+                top: 35, left: 10, right: 10,
+                child: Text(parse(data[index]["content"]["rendered"]).body.text),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
 }
+
+
+ /* Acá tendría que enlistar los comentarios */
+/*  Container(
+      height: 100,
+      color: Colors.grey[300],
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            top: 10, left: 10,
+            child: Text("Autor comentario"),
+          ),
+          Positioned(
+            top: 30, left: 10, right: 10,
+            child: Text("Comentario"),
+          )
+        ],
+      ),
+    ),
+  SizedBox(height: 10,), 
+  
+  
+  TarjetaPost(
+          titulo: parse(data[index]["title"]["rendered"]).body.text,
+          id: idPost,
+          contenido: parse(data[index]["content"]["rendered"]).body.text,
+        );
+  */
