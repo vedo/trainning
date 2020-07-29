@@ -88,7 +88,7 @@ Widget construirPaginaDetalleProducto(BuildContext context, AsyncSnapshot snapsh
               ],),
             ),
 
-            SizedBox(height: 10),
+           /*  SizedBox(height: 10),
             Container(
               alignment: Alignment.centerLeft,
               height: 30,
@@ -126,7 +126,7 @@ Widget construirPaginaDetalleProducto(BuildContext context, AsyncSnapshot snapsh
                   ],
                 ),
               ),
-            )
+            ) */
           ],
         ),
       ),
