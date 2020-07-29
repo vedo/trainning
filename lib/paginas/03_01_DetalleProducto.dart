@@ -88,7 +88,7 @@ Widget construirPaginaDetalleProducto(BuildContext context, AsyncSnapshot snapsh
               ],),
             ),
 
-           /*  SizedBox(height: 10),
+            /* SizedBox(height: 10),
             Container(
               alignment: Alignment.centerLeft,
               height: 30,
@@ -103,7 +103,6 @@ Widget construirPaginaDetalleProducto(BuildContext context, AsyncSnapshot snapsh
                 child: ListView(
                   children: <Widget>[
 
-                    /* Acá tendría que enlistar los comentarios */
                     Container(
                       height: 100,
                       color: Colors.grey[300],
