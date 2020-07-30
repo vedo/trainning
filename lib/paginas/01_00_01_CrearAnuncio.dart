@@ -129,12 +129,12 @@ class _CrearAnuncioState extends State<CrearAnuncio> {
                 SizedBox(height: 10,),
                 RaisedButton(
                   child: Text("Subir producto"),
-                  onPressed: ()  {
+                  onPressed: (){
                     if (_image == null){
                       Scaffold.of(context).showSnackBar(SnackBar(content: Text('Falta seleccionar una imagen')));
                     }
                     if (_formKey.currentState.validate()) {
-                      cliente.postProductWithImage(imagePath: _image, nameProduct: titleProduct, description:  descripcion, regularPrice: precio);
+                      cliente.postProductWithImage(context: context, imagePath: _image, nameProduct: titleProduct, description:  descripcion, regularPrice: precio);
                       Scaffold.of(context).showSnackBar(SnackBar(content: Text('Subiendo producto')));
                     }
                   },

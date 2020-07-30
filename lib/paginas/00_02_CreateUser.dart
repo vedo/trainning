@@ -3,6 +3,7 @@ import 'package:trainning/recursos/constant.dart';
 import 'package:trainning/recursos/client.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateUser extends StatefulWidget {
   CreateUser({Key key, this.title}) : super(key: key);
@@ -46,7 +47,7 @@ class _CreateUserState extends State<CreateUser> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(height: MediaQuery.of(context).size.width * 0.75,),
-                      
+
                       /* Username */
                       Container(
                         width: 250,
@@ -85,7 +86,7 @@ class _CreateUserState extends State<CreateUser> {
                         ),
                       ),
                       SizedBox( height: 20 ),
-                      
+
                       /* CONTRASEÑA */
                       Container(
                         width: 250,
@@ -102,7 +103,7 @@ class _CreateUserState extends State<CreateUser> {
                         ),
                       ),
                       SizedBox(height: 20,),
-                      
+
                       /* REPITE LA CONTRASEÑA */
                       Container(
                         width: 250,
@@ -118,7 +119,7 @@ class _CreateUserState extends State<CreateUser> {
                           },
                         ),
                       ),
-                      
+
                       /* BOTON CREAR CUENTA */
                       SizedBox(height: 40,),
                       Container(
@@ -131,8 +132,13 @@ class _CreateUserState extends State<CreateUser> {
                           onPressed: () async {
                             if( _formKey.currentState.validate()){
                               String body = await cliente.testValidation(name: user,password: password,email: email);
+                              //Validación en proceso
                               Map json = jsonDecode(body);
-                              _onLoading(urlConfirm: json["url"]);
+                              String validateUrl = json["url"];
+                              //Guarda la url de validación, que determinará el inicio de la app hasta que la cuenta sea validada
+                              SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                              sharedPreferences.setString("validate_url", validateUrl);
+                              Navigator.popAndPushNamed(context, "/"); // y enviamos a /Anuncios
                             }
                           },
                           child: Text(

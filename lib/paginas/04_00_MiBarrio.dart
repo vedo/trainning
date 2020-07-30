@@ -78,6 +78,7 @@ Widget construirListaDePosts(BuildContext context, dynamic snapshot) {
   final data = snapshot.data;
   //return snapshot["message"] == null ?
   return ListView.builder(       // Verdadero : Sin error en message
+    padding: EdgeInsets.only(bottom:85),
     scrollDirection: Axis.vertical,
     itemCount: data.length,
     itemBuilder: (BuildContext context, int index) {

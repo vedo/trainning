@@ -26,7 +26,7 @@ class _MisAnunciosState extends State<MisAnuncios> {
         children: <Widget>[
           SizedBox(height: topPadding,),
           TituloConLineas(titulo: "Mis Anuncios",),
-          SizedBox(height: 20,),
+
           botonCentral(
             context: context, 
             titulo: "Nuevo Anuncio", 
@@ -34,15 +34,17 @@ class _MisAnunciosState extends State<MisAnuncios> {
               checkearDatosDeContacto();
             }
           ),
-          SizedBox(height: 10,),
+
           Expanded(
-            child: Container( 
+            child: Container(
+
               child: FutureServerCall(
                 llamadaCliente: cliente.getMyProducts(),
                 completedCallWidgetFunction: construirListaDeProductos
               ), 
             ),
-          )
+          ),
+
         ],
       ),
     );
@@ -81,10 +83,14 @@ class _MisAnunciosState extends State<MisAnuncios> {
 
 /* Lista de productos a partir de la llamada al servidor */
 Widget construirListaDeProductos(BuildContext context, AsyncSnapshot snapshot) {
-  return ListView.builder(
+  return ListView.separated(
+    separatorBuilder: (BuildContext context, int index) => Divider(),
+    shrinkWrap: true,
+    padding: EdgeInsets.only(bottom:85),
     scrollDirection: Axis.vertical,
     itemCount: snapshot.data.length,
     itemBuilder: (BuildContext context, int index) {
+
       String idProducto = snapshot.data[index].id.toString();
       return Tarjeta1(
         tituloTarjeta: snapshot.data[index].name.toString(),

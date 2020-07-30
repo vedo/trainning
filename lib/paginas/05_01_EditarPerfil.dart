@@ -83,7 +83,7 @@ class _EditarPerfilState extends State<EditarPerfil> {
               decoration: InputDecoration( labelText: 'Teléfono', ),
               keyboardType: TextInputType.number,
               validator: (value) {
-                Pattern pattern = '^(?:[+0]9)?[0-9]{10}';
+                Pattern pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
                 RegExp regex = new RegExp(pattern);
                 if (!regex.hasMatch(value))
                   return 'Por favor ingresa un número de teléfono válido';
@@ -101,8 +101,9 @@ class _EditarPerfilState extends State<EditarPerfil> {
                 if ( _formKey.currentState.validate() ) {
                   await cliente.updateMyProfile(direccion: direccion, ciudad: ciudad, comuna: comuna, telefono: telefono);
                   Scaffold.of(context).showSnackBar(SnackBar(content: Text('Actualizando tus datos')));
+                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                   sharedPreferences.setString("datosContacto", "ok");
-                  Navigator.popAndPushNamed(context, '/Perfil');
+                  Navigator.popAndPushNamed(context, '/CrearAnuncio');
                 }
               },
             ),

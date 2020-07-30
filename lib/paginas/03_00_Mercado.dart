@@ -24,6 +24,7 @@ class _StoreListState extends State<StoreList> {
 
 Widget construirListaDeTiendas(BuildContext context, AsyncSnapshot snapshot) {
   return ListView.builder(
+    padding: EdgeInsets.only(bottom:85),
     itemCount: snapshot.data.length,
     itemBuilder: (BuildContext context, int index) {
       String idVendor = snapshot.data[index].id.toString();

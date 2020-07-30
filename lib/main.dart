@@ -5,6 +5,7 @@ import 'package:trainning/paginas/imagePick.dart';
 import 'package:trainning/paginas/00_00_PrimeraPantalla.dart';
 import 'package:trainning/paginas/00_01_LogIn.dart';
 import 'package:trainning/paginas/00_02_CreateUser.dart';
+import 'package:trainning/paginas/00_03_ValidateUser.dart';
 import 'package:trainning/paginas/01_00_00_MisAnuncios.dart';
 import 'package:trainning/paginas/01_00_01_CrearAnuncio.dart';
 import 'package:trainning/paginas/01_00_02_EditarAnuncio.dart';
@@ -32,6 +33,7 @@ void main(){
         '/':                (context) => PrimeraPantalla(),
         '/LogIn':           (context) => LogInMenu(),
         '/CreateUser':      (context) => CreateUser(),
+        '/ValidateUser':    (context) => ValidateUser(),
         
         /* 1.0 Sección MI TIENDA */
         '/Anuncios':        (context) => StandardMenu( contenido: MisAnuncios(),     appBarTitle: 'Mis anuncios',        menuType: "full", menuIndex: 0,),

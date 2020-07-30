@@ -26,18 +26,19 @@ class ClientApi{
   ClientApi();
 
 
-  //Esta es la funcion para enviar imagenes
-  postProductWithImage({File imagePath, String nameProduct, String type="simple", String regularPrice, String description, int vendor}) async{
+  //Este es el metodo para subir productos con imagenes
+  postProductWithImage({dynamic context, File imagePath, String nameProduct, String type="simple", String regularPrice, String description, int vendor}) async{
     //subimos la imagen
     String rawImageBody = await upload(imageFile: imagePath);
     Map jsonImageBody = jsonDecode(rawImageBody);
     String rawProductBody = await postProduct(nameProduct: nameProduct, type: type, regularPrice: regularPrice, description: description, idImage: jsonImageBody["id"]);
     Map jsonProductBody = jsonDecode(rawProductBody);
-    print("esto es id image imagen");
-    print( jsonImageBody['src'] );
-    print("esto es id body producto");
-    print( jsonProductBody['id'] );
-    putImageProduct(idProduct: jsonProductBody["id"].toString(), idImage: jsonImageBody["id"].toString());
+    final id_product = jsonProductBody["id"].toString();
+    final id_image = jsonImageBody["id"].toString();
+    print(id_image);
+    print(id_product);
+    String putImage = await putImageProduct(idProduct: id_product, idImage: id_image);
+    Navigator.popAndPushNamed(context, "/ValidateUser");
   }
 
   Future postProduct({String nameProduct, String type="simple", String regularPrice, String description, int stock, int idImage}) async{
@@ -67,6 +68,7 @@ class ClientApi{
   }
 
 
+
 //Metodo para subir la imagen de los productos
   Future upload({File imageFile}) async {
     sharedPreferences = await SharedPreferences.getInstance();
@@ -84,14 +86,39 @@ class ClientApi{
 
     // algo = response.stream.
     String body = await response.stream.bytesToString();
-    //  StreamSubscription<String> body;
-    //  body = response.stream.transform(utf8.decoder).listen((value)=>value.toString());
-    //body.onData((data) {print(data);});
-
     //devuelve el body del response a la api
     return body;
   }
 
+  Future putImageProduct({String idProduct, String idImage}) async{
+
+
+    Future<String> putResp() async{
+      final bodyMap = jsonEncode({
+        "id_product": idProduct,
+        "images":[
+          {
+            "id": idImage,
+            "position":0
+          }]
+      });
+
+      print(bodyMap);
+      sharedPreferences = await SharedPreferences.getInstance();
+      String token = sharedPreferences.getString("token");
+      String bearerToken = 'Bearer ' + token;
+      http.Response resp = await http.post('http://algocerca.cl:8080/myproducts/',
+          headers: <String, String>{'Authorization' : bearerToken,
+            'Content-Type'  : 'application/json'},
+          body: bodyMap);
+      print(resp.body);
+      return resp.body;
+    }
+
+    final product = await putResp();
+    return product;
+
+  }
 
   Future<Map> login({Map credentials}) async {    //Credentials debiera ser un mapa con username & password
     String url = "http://algocerca.cl:8080/login/";
@@ -123,12 +150,15 @@ class ClientApi{
   } */
 
 
-  Future<http.Response> confirmValidation({String url}) async {
+  Future<http.Response> confirmValidation({String url, String code}) async {
     sharedPreferences = await SharedPreferences.getInstance();
-    http.Response resp = await http.post("$url");
+    http.Response resp = await http.post("$url", body: {"code": code});
     var jsonResponse = json.decode(resp.body);
-    //Hacemos permanente la info del usuario para autologin y renovar tokens
-    sharedPreferences.setString("token",             jsonResponse["token"]);
+    if (jsonResponse["error"] == null){
+      //Hacemos permanente la info del usuario para autologin y renovar tokens
+      sharedPreferences.setString("token",             jsonResponse["token"]);
+      return resp;
+    }
     return resp;
   }
 
@@ -250,39 +280,16 @@ class ClientApi{
 
   /* ACA VAN LOS PUT! */
   Future<String> putResp(String endPoint) async {
-    String bearerToken = 'Bearer ' + 'Aq7ltD1aMdZb';
+    sharedPreferences = await SharedPreferences.getInstance();
+    String token = sharedPreferences.getString("token");
+    String bearerToken = 'Bearer ' + token;
     http.Response resp = await http.put('https://pancolor.cl/wp-json/$endPoint',
       headers: <String, String>{'authorization': bearerToken}, );
     return resp.body;
   }
 
 
-  Future putImageProduct({String idProduct, String idImage}) async{
-    Future<String> putResp(String endPoint) async{
-      final bodyMap = jsonEncode({
-        "images":[
-          {
-            "id": idImage,
-            "position":1
-          }]
-      });
 
-      final mapString = bodyMap.toString();
-      print(mapString);
-      String bearerToken = 'Bearer ' + 'Aq7ltD1aMdZb';
-      http.Response resp = await http.put('https://algocerca.cl:8080/wp-json/$endPoint/$idProduct',
-          headers: <String, String>{'authorization' : bearerToken,
-            'Content-Type'  : 'application/json'},
-          body: mapString);
-      print(resp.body);
-      return resp.body;
-
-    }
-
-    final product = await putResp("wc/v2/products");
-    return product;
-
-  }
 
   /* Llamadas al servidor GET, POST, PUT */
 
