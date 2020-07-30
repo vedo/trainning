@@ -50,6 +50,7 @@ class DetallePost extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
+                          Text(data["_embedded"]["author"][0]["name"]),
                           Text(
                             parse(data["title"]["rendered"]).body.text,
                             style: TextStyle( fontWeight: FontWeight.bold, fontSize: 22, ),

@@ -364,8 +364,10 @@ class ClientApi{
   }
 
   Future getDetailPost<map>(postId) async{
-    http.Response resp = await getRawResponse(endPoint: "wp/v2/posts/$postId");
+    http.Response resp = await getRawResponse(endPoint: "wp/v2/posts/$postId?_embed");
+
     return resp.statusCode == 200 ? jsonDecode(resp.body) : {"message": resp.body};
+
   }
 
   Future commentPost({String contenido, String postId}) async{
